@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ariana Molina — UX Researcher & Data Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --purple: #6B3FF5;
+  --purple-light: #EEE8FF;
+  --teal: #2BC0B4;
+  --teal-light: #E0F7F5;
+  --dark: #111111;
+  --mid: #555566;
+  --border: #E5E5F0;
+  --white: #FFFFFF;
+  --nav-height: 70px;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background: var(--white);
+  color: var(--dark);
+  overflow: hidden;
+}
+
+/* ════ NAV ════ */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-center {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: auto;
+  scrollbar-color: #CCCCCC #F0F0F0;
+  padding-bottom: 4px;
+  position: relative;
+  gap: 8px;
+  padding-left: 8px;
+}
+
+.nav-center::-webkit-scrollbar {
+  height: 4px;
+}
+
+.nav-center::-webkit-scrollbar-track {
+  background: #F0F0F0;
+  border-radius: 10px;
+  margin-top: 0px;
+}
+
+.nav-center::-webkit-scrollbar-thumb {
+  background: #CCCCCC;
+  border-radius: 10px;
+}
+
+.nav-center::-webkit-scrollbar-thumb:hover {
+  background: #AAAAAA;
+}
+
+.nav-center a {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--mid);
+  text-decoration: none;
+  padding: 16px 20px;
+  white-space: nowrap;
+  position: relative;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0;
+  background: transparent;
+}
+
+.nav-center a.nav-active {
+  color: var(--purple);
+  background: var(--purple-light);
+}
+
+.nav-center a.nav-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--purple);
+}
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--purple);
+  border-radius: 3px 3px 0 0;
+}
+
+.nav-right {
+  padding-right: 16px;
+}
+
+.lang-btn {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--dark);
+  cursor: pointer;
+}
+
+/* ════ PAGES ════ */
+.page {
+  position: absolute;
+  top: var(--nav-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.page.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ════ SCROLL TO TOP ════ */
+#scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 45px;
+  height: 45px;
+  background: var(--purple);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(107, 63, 245, 0.3);
+}
+
+#scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+#scroll-to-top:hover {
+  background: #5A2FE0;
+  transform: translateY(-2px);
+}
+
+#scroll-to-top svg {
+  width: 20px;
+  height: 20px;
+  stroke: white;
+  stroke-width: 2;
+  fill: none;
+}
+
+/* ════ HOME PAGE ════ */
+.home-section {
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+  min-height: calc(100vh - var(--nav-height));
+}
+
+.home-photo-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.photo-frame {
+  width: 200px;
+  height: 240px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--purple-light);
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-top: 8px;
+}
+
+.home-title {
+  font-size: 0.9rem;
+  color: var(--mid);
+}
+
+.home-cta {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.btn {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--purple);
+  color: var(--white);
+}
+
+.btn-secondary {
+  background: #6DD5ED;
+  color: var(--white);
+}
+
+.btn-tertiary {
+  background: var(--teal);
+  color: var(--white);
+}
+
+.home-text-content {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px 24px;
+}
+
+.home-tagline {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: transparent;
+  margin-bottom: 16px;
+  position: relative;
+  display: inline-block;
+}
+
+.home-tagline::before {
+  content: 'Turning data into decisions.';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--dark);
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--purple);
+  animation: typing 2s steps(30, end) forwards, blink 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@keyframes blink {
+  0%, 100% { border-color: var(--purple); }
+  50%       { border-color: transparent; }
+}
+
+.home-role {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--purple);
+  margin-bottom: 20px;
+}
+
+.home-desc p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--mid);
+  margin-bottom: 12px;
+}
+
+.home-desc strong {
+  color: var(--dark);
+  font-weight: 600;
+}
+
+/* ════ EXPERIENCE PAGE ════ */
+.experience-timeline {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 40px 24px 40px 60px;
+}
+
+.exp-card {
+  background: #F5F5F5;
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 16px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.exp-card.active {
+  background: var(--purple-light);
+}
+
+.exp-card::before {
+  content: '';
+  position: absolute;
+  left: -40px;
+  top: 24px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 4px solid var(--purple);
+  transition: all 0.3s ease;
+}
+
+.exp-card.active::before {
+  background: var(--purple);
+  border: 4px solid var(--white);
+  box-shadow: 0 0 0 2px var(--purple);
+}
+
+.exp-card::after {
+  content: '';
+  position: absolute;
+  left: -31px;
+  top: 50px;
+  width: 2px;
+  height: calc(100% + 10px);
+  background: var(--border);
+}
+
+.exp-card:last-child::after {
+  display: none;
+}
+
+.exp-year {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--purple);
+  margin-bottom: 6px;
+}
+
+.exp-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.exp-image {
+  width: 100%;
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.exp-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ════ MY APPROACH PAGE ════ */
+.approach-section {
+  padding: 40px 24px;
+}
+
+.approach-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 24px;
+}
+
+.approach-card {
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.approach-card.purple { background: var(--purple-light); }
+.approach-card.teal { background: var(--teal-light); }
+.approach-card.green { background: #E8F5E9; }
+
+.approach-card-image {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.approach-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.approach-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.approach-card-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-align: left;
+  margin: 0;
+}
+
+.approach-card-title.purple { color: var(--purple); }
+.approach-card-title.teal { color: var(--teal); }
+.approach-card-title.green { color: #4CAF50; }
+
+.approach-card-desc {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--dark);
+  text-align: left;
+  margin: 0;
+}
+
+/* Principle Cards */
+.principle-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.principle-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.principle-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.principle-card h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.principle-card p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--mid);
+}
+
+/* ════ SELECTED WORK PAGE ════ */
+.work-section {
+  padding: 40px 24px;
+}
+
+.work-nav-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 50px;
+}
+
+.work-nav-card {
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.work-nav-card:hover {
+  transform: translateY(-2px);
+}
+
+.work-nav-card.active {
+  box-shadow: 0 8px 20px rgba(107, 63, 245, 0.25);
+}
+
+.work-nav-card.reports { border-color: var(--purple); }
+.work-nav-card.papers { border-color: #3FA0FF; }
+.work-nav-card.projects { border-color: var(--teal); }
+
+.work-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.work-nav-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.work-nav-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.work-nav-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.work-nav-arrow {
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.work-nav-card.reports .work-nav-arrow { color: var(--purple); }
+.work-nav-card.papers .work-nav-arrow { color: #3FA0FF; }
+.work-nav-card.projects .work-nav-arrow { color: var(--teal); }
+
+.work-content-section {
+  margin-top: 60px;
+  display: none;
+}
+
+.work-content-section.active {
+  display: block;
+}
+
+.work-content-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 24px;
+}
+
+/* Report Cards */
+.report-card {
+  display: flex;
+  align-items: stretch;
+  background: var(--white);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: 20px;
+  min-height: 140px;
+}
+
+.report-card:hover { 
+  transform: translateY(-3px); 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12); 
+}
+
+.report-thumb {
+  width: 130px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #FF6B35 0%, #F2994A 40%, #9B51E0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 12px;
+  line-height: 1.5;
+}
+
+.report-info { 
+  padding: 18px 22px; 
+  flex: 1;
+}
+
+.report-info h4 { 
+  font-size: 0.9rem; 
+  font-weight: 600; 
+  color: var(--dark); 
+  line-height: 1.4; 
+}
+
+.report-info p  { 
+  font-size: 0.74rem; 
+  color: var(--mid); 
+  margin-top: 6px; 
+}
+
+/* Paper Items */
+.paper-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.paper-cat {
+  padding: 8px 18px;
+  border-radius: 24px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border: 1.5px solid var(--border);
+  color: var(--mid);
+  background: var(--white);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.paper-cat.active {
+  background: var(--purple);
+  color: var(--white);
+  border-color: var(--purple);
+}
+
+.paper-item {
+  margin-bottom: 16px;
+}
+
+.paper-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--purple);
+  text-decoration: none;
+  display: block;
+  line-height: 1.5;
+}
+
+.paper-title:hover {
+  text-decoration: underline;
+}
+
+/* ════ ABOUT PAGE ════ */
+.about-section {
+  padding: 40px 24px;
+}
+
+.about-photo {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 30px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.about-photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.about-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 20px;
+}
+
+.about-text p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--mid);
+  margin-bottom: 16px;
+}
+
+.about-text strong {
+  color: var(--dark);
+  font-weight: 600;
+}
+
+/* ════ CONTACT PAGE ════ */
+.contact-section {
+  padding: 40px 24px;
+}
+
+.contact-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 30px;
+}
+
+.contact-items {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 1rem;
+}
+
+.contact-icon {
+  width: 50px;
+  height: 50px;
+  background: var(--purple-light);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-icon img {
+  width: 28px;
+  height: 28px;
+}
+
+.contact-item a {
+  color: var(--purple);
+  text-decoration: none;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.contact-item a:hover {
+  text-decoration: underline;
+}
+
+</style>
+</head>
+<body>
+
+<script>
+// Redirect to desktop version if screen is large
+if (window.innerWidth > 768) {
+  window.location.href = 'index.html';
+}
+</script>
+
+<!-- Scroll to Top Button -->
+<div id="scroll-to-top">
+  <svg viewBox="0 0 24 24">
+    <polyline points="18 15 12 9 6 15"></polyline>
+  </svg>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-center" id="nav-center-links">
+    <a href="#" id="nav-home" onclick="goTo('home');return false;" class="nav-active">Home</a>
+    <a href="#" id="nav-experience" onclick="goTo('experience');return false;">Experience</a>
+    <a href="#" id="nav-approach" onclick="goTo('approach');return false;">My Approach</a>
+    <a href="#" id="nav-work" onclick="goTo('work');return false;">Selected Work</a>
+    <a href="#" id="nav-about" onclick="goTo('about');return false;">About</a>
+    <a href="#" id="nav-contact" onclick="goTo('contact');return false;">Contact</a>
+  </div>
+  <div class="nav-right">
+    <button class="lang-btn">ENG ▼</button>
+  </div>
+</nav>
+
+<!-- ══ HOME ══ -->
+<div class="page active" id="page-home">
+  <div class="home-section">
+    <div class="home-photo-col">
+      <div class="photo-frame">
+        <img src="arianaprofile.png" alt="Ariana Molina">
+      </div>
+      <div class="home-name">Ariana Molina</div>
+      <div class="home-title">MSc in Economics<br>UX Researcher</div>
+      
+      <div class="home-cta">
+        <a href="#" onclick="goTo('work');return false;" class="btn btn-primary">Projects</a>
+        <a href="https://drive.google.com/file/d/1RzJFGUnyrL5veYITiLxnNQrFTWKRz8jS/view?usp=drive_link" target="_blank" class="btn btn-secondary">Download CV</a>
+        <a href="#" onclick="goTo('contact');return false;" class="btn btn-tertiary">Contact</a>
+      </div>
+    </div>
+
+    <div class="home-text-content">
+      <div class="home-tagline">Turning data into decisions.</div>
+      <div class="home-role">UX Researcher & Data Analyst</div>
+      <div class="home-desc">
+        <p>With several years of experience at <strong>Academic Work, CERN, and UBS</strong>, I bring a strong analytical background.</p>
+        <p>My approach combines <strong>analytics, UX thinking, and experimentation</strong> to translate data into impactful insights.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EXPERIENCE ══ -->
+<div class="page" id="page-experience">
+  <div class="experience-timeline">
+    <div class="exp-card active" onclick="selectExpMobile(this)">
+      <div class="exp-year">2025</div>
+      <div class="exp-title">ESG Project Coordinator · ExcellGene</div>
+      <div class="exp-image">
+        <img src="excellgene.png" alt="ExcellGene">
+      </div>
+    </div>
+
+    <div class="exp-card" onclick="selectExpMobile(this)">
+      <div class="exp-year">2024</div>
+      <div class="exp-title">Science Communicator · CERN</div>
+      <div class="exp-image">
+        <img src="cernsciencecommunication.png" alt="CERN">
+      </div>
+    </div>
+
+    <div class="exp-card" onclick="selectExpMobile(this)">
+      <div class="exp-year">2024</div>
+      <div class="exp-title">Data Analyst & Researcher · CERN</div>
+      <div class="exp-image">
+        <img src="cerndataanalyst.png" alt="CERN">
+      </div>
+    </div>
+
+    <div class="exp-card" onclick="selectExpMobile(this)">
+      <div class="exp-year">2023</div>
+      <div class="exp-title">Data Entry Consultant · SIE SA</div>
+      <div class="exp-image">
+        <img src="siesa.png" alt="SIE SA">
+      </div>
+    </div>
+
+    <div class="exp-card" onclick="selectExpMobile(this)">
+      <div class="exp-year">2022</div>
+      <div class="exp-title">Receptionist · Credit Suisse/UBS</div>
+      <div class="exp-image">
+        <img src="creditsuisse.png" alt="Credit Suisse">
+      </div>
+    </div>
+
+    <div class="exp-card" onclick="selectExpMobile(this)">
+      <div class="exp-year">2021</div>
+      <div class="exp-title">Financial Analyst · Canton of Vaud</div>
+      <div class="exp-image">
+        <img src="cantonvaud.png" alt="Canton of Vaud">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MY APPROACH ══ -->
+<div class="page" id="page-approach">
+  <div class="approach-section">
+    <h2 class="approach-title">My Approach</h2>
+    
+    <div class="approach-card purple">
+      <div class="approach-card-image">
+        <img src="research.png" alt="Research">
+      </div>
+      <div class="approach-card-content">
+        <h3 class="approach-card-title purple">Research</h3>
+        <p class="approach-card-desc">"Understanding problems before solving them."</p>
+      </div>
+    </div>
+
+    <div class="approach-card teal">
+      <div class="approach-card-image">
+        <img src="analysis.png" alt="Analysis">
+      </div>
+      <div class="approach-card-content">
+        <h3 class="approach-card-title teal">Analysis</h3>
+        <p class="approach-card-desc">"Turning data into actionable insights."</p>
+      </div>
+    </div>
+
+    <div class="approach-card green">
+      <div class="approach-card-image">
+        <img src="impact.png" alt="Impact">
+      </div>
+      <div class="approach-card-content">
+        <h3 class="approach-card-title green">Impact</h3>
+        <p class="approach-card-desc">"Creating solutions that drive real change."</p>
+      </div>
+    </div>
+
+    <h3 style="font-size: 1.4rem; font-weight: 700; color: var(--dark); margin-top: 50px; margin-bottom: 24px;">My Guiding Principles</h3>
+
+    <div class="principle-card">
+      <div class="principle-icon">
+        <img src="diversityandinclusion.png" alt="Inclusion & Diversity">
+      </div>
+      <h4>Inclusion & Diversity</h4>
+      <p>As someone with a multicultural background, I place strong importance on building inclusive environments where diverse perspectives are valued. I aim to ensure that data-driven decisions reflect the needs of all users — including those who are often underrepresented.</p>
+    </div>
+
+    <div class="principle-card">
+      <div class="principle-icon">
+        <img src="continuouslearning.png" alt="Continuous Learning">
+      </div>
+      <h4>Continuous Learning</h4>
+      <p>I see learning as an ongoing process. In a rapidly evolving field, I actively seek to expand my knowledge — whether through new technologies, research methods, or interdisciplinary perspectives.</p>
+    </div>
+
+    <div class="principle-card">
+      <div class="principle-icon">
+        <img src="curiosity.png" alt="Curiosity">
+      </div>
+      <h4>Curiosity</h4>
+      <p>Curiosity drives my work. I constantly question assumptions, explore patterns, and look beyond the obvious to better understand behaviors and uncover meaningful insights.</p>
+    </div>
+
+    <div class="principle-card">
+      <div class="principle-icon">
+        <img src="trust.png" alt="Trust & Integrity">
+      </div>
+      <h4>Trust & Integrity</h4>
+      <p>I believe that trust is essential in both data and collaboration. I strive to ensure that my analyses are transparent, reliable, and ethically grounded, while building strong and respectful relationships with stakeholders.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SELECTED WORK ══ -->
+<div class="page" id="page-work">
+  <div class="work-section">
+    <h2 class="approach-title">Selected Work</h2>
+    
+    <div class="work-nav-cards">
+      <div class="work-nav-card reports" onclick="toggleWorkSection('reports', this)">
+        <div class="work-nav-left">
+          <div class="work-nav-icon">
+            <img src="reports.png" alt="Reports">
+          </div>
+          <div class="work-nav-title">Reports</div>
+        </div>
+        <div class="work-nav-arrow">→ View reports</div>
+      </div>
+
+      <div class="work-nav-card papers" onclick="toggleWorkSection('papers', this)">
+        <div class="work-nav-left">
+          <div class="work-nav-icon">
+            <img src="researchpapers.png" alt="Papers">
+          </div>
+          <div class="work-nav-title">Papers</div>
+        </div>
+        <div class="work-nav-arrow">→ View papers</div>
+      </div>
+
+      <div class="work-nav-card projects" onclick="toggleWorkSection('projects', this)">
+        <div class="work-nav-left">
+          <div class="work-nav-icon">
+            <img src="UXdesign.png" alt="UX Design">
+          </div>
+          <div class="work-nav-title">UI / UX Design Projects</div>
+        </div>
+        <div class="work-nav-arrow">→ View projects</div>
+      </div>
+    </div>
+
+    <!-- Reports Section -->
+    <div id="reports-section" class="work-content-section">
+      <h2 class="work-content-title">Reports</h2>
+      <a href="https://drive.google.com/file/d/1KbQlaSQvNeTPuH8zZ8ns8xSP9dnXKgRQ/view?usp=drive_link" target="_blank" class="report-card">
+        <div class="report-thumb">ExcellGene<br>Sustainability<br>Report 2025</div>
+        <div class="report-info">
+          <h4>Sustainability Report — ExcellGene 2025</h4>
+          <p>ESG environmental analysis and reporting for a Swiss biotech company.</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- Papers Section -->
+    <div id="papers-section" class="work-content-section">
+      <h2 class="work-content-title">Papers</h2>
+      
+      <div class="paper-cats">
+        <div class="paper-cat active" data-cat="all" onclick="filterPapers('all', this)">All</div>
+        <div class="paper-cat" data-cat="mathematics" onclick="filterPapers('mathematics', this)">Mathematics</div>
+        <div class="paper-cat" data-cat="economics" onclick="filterPapers('economics', this)">Economics</div>
+        <div class="paper-cat" data-cat="computer-science" onclick="filterPapers('computer-science', this)">Computer Science</div>
+        <div class="paper-cat" data-cat="sociology" onclick="filterPapers('sociology', this)">Sociology</div>
+        <div class="paper-cat" data-cat="ethics" onclick="filterPapers('ethics', this)">Ethics & Religion</div>
+      </div>
+
+      <div class="paper-item" data-category="mathematics">
+        <a href="https://zenodo.org/records/19516959" target="_blank" class="paper-title">Arianean Arithmetic: Peano Arithmetic over Belnap's Four-Valued Logic (2026)</a>
+      </div>
+
+      <div class="paper-item" data-category="economics">
+        <a href="https://zenodo.org/records/19600183" target="_blank" class="paper-title">Assessing the Relationship Between Energy-Efficient Renovations and Swiss Households Health: A Longitudinal Study from 2013 to 2023(2025)</a>
+      </div>
+    </div>
+
+    <!-- Projects Section -->
+    <div id="projects-section" class="work-content-section">
+      <h2 class="work-content-title">UI / UX Design Projects</h2>
+      <a href="https://www.figma.com/proto/l3C1N1dpYdsfjZ6MEqYUYR/KCC-App?node-id=0-1&t=dflAaLbjxuSosCEs-1" target="_blank" class="report-card">
+        <div class="report-thumb" style="background:linear-gradient(135deg,#1a4a9e,#2d6eb8,#4a8fd4);color:var(--white);">Crypto<br>Mobile App<br>Idea</div>
+        <div class="report-info">
+          <h4>Idea for Nexi: Crypto App</h4>
+          <p>Mobile cryptocurrency wallet design with transaction tracking and portfolio management.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ABOUT ══ -->
+<div class="page" id="page-about">
+  <div class="about-section">
+    <h2 class="about-title">About me</h2>
+    
+    <div class="about-photo">
+      <img src="aboutme.jpg" alt="Ariana Molina">
+    </div>
+    
+    <p style="font-size: 0.85rem; color: var(--mid); text-align: center; margin-bottom: 24px; font-style: italic;">Some elements representing different aspects of my personality.</p>
+    
+    <div class="about-text">
+      <p>I'm <strong>Ariana Molina</strong>, a UX Researcher and Data Analyst with a multicultural background — born in Ecuador, and with 3 different nationalities, I have lived and worked across 5 different countries, which has given me a unique ability to understand diverse perspectives and adapt quickly to new environments.</p>
+      
+      <p>My academic journey led me to a <strong>Master's degree in Applied Economics</strong> at the University of Neuchâtel, where I developed a strong foundation in statistical modeling, data analysis and behavioral economics.</p>
+      
+      <p>As a neurodivergent person, I experience the world with an intensity and curiosity that I consider one of my greatest strengths. I'm naturally wired to seek novelty, make unexpected connections between ideas, and dive deep into complex problems until I find meaningful answers. This is not a limitation — it's the engine behind my creativity, my drive to keep learning, and my ability to bring alternative perspectives to every project I work on.</p>
+      
+      <p>I deeply value <strong>inclusion and equal representation</strong> — not just as professional values, but as lived experience. When I'm not analyzing data or designing research studies, you'll find me playing chess, exploring via ferratas, or cooking dishes from everywhere around the world just for fun.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CONTACT ══ -->
+<div class="page" id="page-contact">
+  <div class="contact-section">
+    <h2 class="contact-title">Contact</h2>
+    
+    <div class="contact-items">
+      <div class="contact-item">
+        <div class="contact-icon">
+          <img src="email.png" alt="Email">
+        </div>
+        <a href="mailto:ariana.molina.c@outlook.com">ariana.molina.c@outlook.com</a>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon">
+          <img src="linkedin.png" alt="LinkedIn">
+        </div>
+        <a href="https://www.linkedin.com/in/ariana-m-c-278146181/" target="_blank">linkedin.com/in/ariana-m-c-278146181</a>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon">
+          <img src="location.png" alt="Location">
+        </div>
+        <span>Based in Lausanne, Switzerland — open to opportunities in Geneva, Zurich and remote.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Navigation
+let currentPage = 'home';
+
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-center a').forEach(a => a.classList.remove('nav-active'));
+  
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('nav-' + page).classList.add('nav-active');
+  
+  currentPage = page;
+  
+  // Scroll to top when changing pages
+  document.getElementById('page-' + page).scrollTop = 0;
+}
+
+// Experience card selection (mobile)
+function selectExpMobile(card) {
+  document.querySelectorAll('.exp-card').forEach(c => c.classList.remove('active'));
+  card.classList.add('active');
+}
+
+// Work section toggle
+function toggleWorkSection(section, card) {
+  const sectionId = section + '-section';
+  const targetSection = document.getElementById(sectionId);
+  
+  // Toggle active card
+  document.querySelectorAll('.work-nav-card').forEach(c => c.classList.remove('active'));
+  card.classList.add('active');
+  
+  // Hide all sections
+  document.querySelectorAll('.work-content-section').forEach(s => s.classList.remove('active'));
+  
+  // Show target section
+  targetSection.classList.add('active');
+  
+  // Scroll to section
+  setTimeout(() => {
+    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+// Paper filter
+function filterPapers(category, btn) {
+  // Update active button
+  document.querySelectorAll('.paper-cat').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  
+  // Filter papers
+  document.querySelectorAll('.paper-item').forEach(item => {
+    if (category === 'all' || item.dataset.category === category) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+// Scroll to top button
+const scrollBtn = document.getElementById('scroll-to-top');
+
+document.querySelectorAll('.page').forEach(page => {
+  page.addEventListener('scroll', () => {
+    if (page.scrollTop > 300) {
+      scrollBtn.classList.add('visible');
+    } else {
+      scrollBtn.classList.remove('visible');
+    }
+  });
+});
+
+scrollBtn.addEventListener('click', () => {
+  const activePage = document.querySelector('.page.active');
+  activePage.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+
+</body>
+</html>
