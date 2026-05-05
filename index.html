@@ -1858,10 +1858,10 @@ function initializeSwissMap() {
 
   const tooltip = d3.select('#tooltip');
 
-  const swissTopoUrl = "https://raw.githubusercontent.com/interactivethings/swiss-maps/master/2023/ch-cantons.json";
+  const swissTopoUrl = "switzerland.geojson";
 
   d3.json(swissTopoUrl).then(function(topology) {
-    const cantons = topojson.feature(topology, topology.objects.cantons);
+    const cantons = topology;
     
     const projection = d3.geoMercator()
       .fitSize([width, height], cantons);
