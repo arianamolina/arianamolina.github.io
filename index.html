@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ariana Molina — UX Researcher & Data Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --purple: #6B3FF5;
+  --purple-light: #EEE8FF;
+  --teal: #2BC0B4;
+  --teal-light: #E0F7F5;
+  --dark: #111111;
+  --mid: #555566;
+  --border: #E5E5F0;
+  --white: #FFFFFF;
+  --nav-height: 90px;
+  --left-panel: 220px;
+  --exp-sidebar: 380px;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background: var(--white);
+  color: var(--dark);
+  overflow: hidden;
+}
+
+/* ════ NAV ════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-height);
+  background: var(--white);
+  display: flex;
+  align-items: stretch;
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+  contain: layout;
+}
+
+.nav-active-panel { display: none; }
+
+.nav-center {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.nav-center a {
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--dark);
+  text-decoration: none;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  position: relative;
+  transition: color 0.18s;
+}
+
+.nav-center a:hover { color: var(--purple); }
+
+.nav-center a.nav-active {
+  color: var(--purple);
+  font-weight: 600;
+  background: var(--purple-light);
+}
+
+.nav-center a.nav-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--purple);
+  border-radius: 2px 2px 0 0;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  padding-right: 32px;
+}
+
+.lang-btn {
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 16px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--dark);
+  background: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.18s;
+}
+.lang-btn:hover { border-color: var(--purple); }
+
+/* ════ PAGES ════ */
+.page {
+  display: none;
+  position: fixed;
+  top: var(--nav-height);
+  left: 0; right: 0; bottom: 0;
+  overflow-y: auto;
+  background: var(--white);
+  animation: pageFade 0.28s ease;
+}
+
+.page.active { display: block; }
+
+#page-home.active,
+#page-about.active,
+#page-contact.active {
+  display: flex;
+}
+
+@keyframes pageFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ════ HOME ════ */
+#page-home {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#particles-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.home-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  align-items: center;
+  gap: 80px;
+  padding: 80px;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.home-photo-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.photo-frame {
+  width: 240px;
+  height: 280px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--purple-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--purple);
+  opacity: 0.45;
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 20px;
+}
+
+.home-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--dark);
+  text-align: center;
+}
+
+.home-titles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.home-titles span {
+  font-size: 0.8rem;
+  color: var(--mid);
+  font-weight: 400;
+  text-align: center;
+}
+
+.home-tagline {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.home-text-content {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.home-role {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--dark);
+  margin-bottom: 24px;
+}
+
+.home-desc p {
+  font-size: 0.86rem;
+  line-height: 1.75;
+  color: var(--mid);
+  margin-bottom: 10px;
+  max-width: 540px;
+}
+
+.home-desc strong { color: var(--dark); font-weight: 600; }
+
+.home-cta {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  transition: opacity 0.18s, transform 0.18s;
+}
+.btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.btn-purple { background: var(--purple); color: #fff; }
+.btn-teal   { background: var(--teal);   color: #fff; }
+.btn-blue { background: #3399FF; color: #fff;}
+
+/* ════ EXPERIENCE ════ */
+.experience-layout {
+  display: grid;
+  grid-template-columns: var(--exp-sidebar) 1fr;
+  height: 100%;
+  min-height: calc(100vh - var(--nav-height));
+}
+
+.exp-sidebar {
+  border-right: 1px solid var(--border);
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.exp-sidebar::before {
+  content: '';
+  position: absolute;
+  left: 30px;
+  top: 55px; bottom: 55px;
+  width: 2px;
+  background: var(--border);
+}
+
+.exp-item {
+  padding: 16px 20px 16px 52px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+  border-radius: 0 12px 12px 0;
+  margin-right: 16px;
+}
+
+.exp-item::before {
+  content: '';
+  position: absolute;
+  left: 23px;
+  top: 22px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid #CCC;
+  transition: all 0.2s;
+  z-index: 1;
+}
+
+.exp-item.active { background: var(--purple-light); }
+.exp-item.active::before { background: var(--purple); border-color: var(--purple); }
+
+.exp-item-year {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--purple);
+  margin-bottom: 5px;
+}
+
+.exp-item-role {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--dark);
+  line-height: 1.45;
+}
+
+.exp-content {
+  padding: 56px 60px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.exp-card {
+  background: var(--white);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 4px 28px rgba(0,0,0,0.09);
+  width: 100%;
+  max-width: 620px;
+}
+
+.exp-card-visual {
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  position: relative;
+}
+
+.exp-card-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 60%, rgba(107,63,245,0.45) 0%, transparent 65%);
+}
+
+.exp-card-body { padding: 22px; }
+
+.exp-card-body h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.exp-card-subtitle {
+  font-size: 0.78rem;
+  color: var(--mid);
+  margin-bottom: 12px;
+}
+
+.exp-card-desc {
+  font-size: 0.8rem;
+  color: var(--mid);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.exp-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.tag {
+  padding: 4px 11px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.tag-purple { background: var(--purple-light); color: var(--purple); }
+.tag-teal   { background: var(--teal-light);   color: #1a9e94; }
+
+/* ════ APPROACH ════ */
+.approach-page {
+  padding: 48px 80px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-heading {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.approach-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 52px;
+}
+
+.approach-card {
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.22s, box-shadow 0.22s;
+}
+.approach-card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,0,0,0.1); }
+
+
+.approach-card-img {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+}
+
+.approach-card-img img {
+  transition: transform 0.3s ease;
+}
+
+.approach-card:hover img {
+  transform: scale(1.03);
+}
+
+
+.approach-card.purple-card { background: var(--purple-light); }
+.approach-card.teal-card   { background: #E6F4FF; }
+.approach-card.cyan-card   { background: var(--teal-light); }
+
+.approach-card-body { padding: 20px 22px 24px; }
+
+.approach-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.approach-card.purple-card .approach-card-title { color: var(--purple); }
+.approach-card.teal-card   .approach-card-title { color: #3399FF; }
+.approach-card.cyan-card   .approach-card-title { color: var(--teal); }
+
+.approach-card-desc {
+  font-size: 0.8rem;
+  color: var(--mid);
+  line-height: 1.65;
+}
+
+.principles-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 24px;
+  color: var(--dark);
+}
+
+.principles-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.principle-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 18px;
+  text-align: center;
+  background: var(--white);
+  transition: box-shadow 0.2s;
+}
+.principle-card:hover { box-shadow: 0 8px 24px rgba(107,63,245,0.1); }
+
+.principle-icon img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+.principle-card h4 {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+
+.principle-card p {
+  font-size: 0.74rem;
+  color: var(--mid);
+  line-height: 1.65;
+}
+
+/* ════ SELECTED WORK ════ */
+.work-page {
+  padding: 48px 80px 60px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.work-top-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 40px;
+}
+
+.work-cat {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.22s;
+}
+.work-cat:hover, .work-cat.active {
+  border-color: var(--purple);
+  box-shadow: 0 8px 24px rgba(107,63,245,0.1);
+}
+
+.work-cat-icon { font-size: 2.2rem; margin-bottom: 14px; display: block; }
+.work-cat h3   { font-size: 0.92rem; font-weight: 700; margin-bottom: 10px; }
+.work-cat p    { font-size: 0.76rem; color: var(--mid); line-height: 1.55; margin-bottom: 14px; }
+
+.work-cat-link       { font-size: 0.78rem; font-weight: 600; color: var(--purple); }
+.work-cat-link.blue  { color: #3399FF; }
+
+.work-cat-link.teal  { color: #2BC0B4; }
+
+.work-sub { display: none; }
+.work-sub.active { display: block; }
+
+.report-card {
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  max-width: 480px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.report-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+
+.report-thumb {
+  width: 130px;
+  min-height: 110px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #FF6B35 0%, #F2994A 40%, #9B51E0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 12px;
+  line-height: 1.5;
+}
+
+.report-info { padding: 18px 22px; }
+.report-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--dark); line-height: 1.4; }
+.report-info p  { font-size: 0.74rem; color: var(--mid); margin-top: 6px; }
+
+.paper-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.paper-cat {
+  padding: 8px 18px;
+  border-radius: 24px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border: 1.5px solid var(--border);
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.18s;
+  background: var(--white);
+}
+.paper-cat:hover, .paper-cat.active {
+  background: var(--purple);
+  color: #fff;
+  border-color: var(--purple);
+}
+
+/* ════ ABOUT ════ */
+#page-about {
+  align-items: flex-start;   /* remonte tout */
+  justify-content: center;
+  padding-top: 20px;         /* réduit l’espace en haut */
+}
+
+.about-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 56px;
+  padding: 48px 48px 48px 40px;
+  align-items: flex-start;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.about-text {
+  padding-top: 40px;
+}
+
+.about-text p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.about-photo {
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 4/3;
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--purple-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.about-me-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 20px;   /* updated */
+  text-align: left;
+  padding-left: 40px;    /* added */
+}
+
+.about-caption {
+  font-size: 0.74rem;
+  color: var(--mid);
+  margin-top: 10px;
+  font-style: italic;
+  text-align: center;
+}
+
+.about-text h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 22px;
+}
+
+.about-text p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--mid);
+  margin-bottom: 14px;
+  text-align: justify;
+}
+
+.about-text strong { color: var(--dark); font-weight: 600; }
+
+/* ════ CONTACT ════ */
+#page-contact {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(107,63,245,0.05),
+    rgba(43,192,180,0.05)
+  );
+}
+
+#page-contact::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 30% 40%,
+    rgba(107,63,245,0.15),
+    transparent 60%
+  );
+  z-index: 0;
+
+  animation: glowMove 12s ease-in-out infinite;
+}
+
+#page-contact.active {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-city-bg { display: none; }
+
+.contact-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.contact-inner h2 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 48px;
+  text-align: left;
+}
+
+.contact-items { display: flex; flex-direction: column; gap: 32px; }
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 1.15rem;
+}
+
+.contact-ico {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--purple-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden; /* IMPORTANT */
+}
+
+.contact-ico img {
+  width: 20px !important;
+  height: 20px !important;
+  object-fit: contain;
+  position: static !important;
+}
+
+.contact-item a {
+  color: var(--dark);
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 1.15rem;
+  transition: color 0.18s;
+}
+.contact-item a:hover { color: var(--purple); }
+.contact-item span { color: var(--mid); font-weight: 300; font-size: 1.05rem; line-height: 1.55; }
+
+/* scrollbar */
+.page::-webkit-scrollbar { width: 4px; }
+.page::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ════ TYPEWRITER ════ */
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--purple);
+  width: 0;
+  animation: typing 2s steps(30, end) forwards, blink 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@keyframes glowMove {
+  0% { transform: translate(0,0); }
+  50% { transform: translate(20px, -20px); }
+  100% { transform: translate(0,0); }
+}
+
+@keyframes blink {
+  0%, 100% { border-color: var(--purple); }
+  50%       { border-color: transparent; }
+}
+</style>
+</head>
+<body>
+
+<script>
+// Redirect to mobile version if screen is small
+if (window.innerWidth <= 768) {
+  window.location.href = 'mobile.html';
+}
+</script>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-active-panel"></div>
+  <div class="nav-center" id="nav-center-links">
+    <a href="#" id="nav-home"       onclick="goTo('home');return false;"       class="nav-active">Home</a>
+    <a href="#" id="nav-experience" onclick="goTo('experience');return false;"            >Experience</a>
+    <a href="#" id="nav-approach"   onclick="goTo('approach');return false;"              >My Approach</a>
+    <a href="#" id="nav-work"       onclick="goTo('work');return false;"                  >Selected Work</a>
+    <a href="#" id="nav-about"      onclick="goTo('about');return false;"                 >About</a>
+    <a href="#" id="nav-contact"    onclick="goTo('contact');return false;"               >Contact</a>
+  </div>
+  <div class="nav-right">
+    <button class="lang-btn">ENG ▾</button>
+  </div>
+</nav>
+
+<!-- ── HOME ── -->
+<div class="page active" id="page-home">
+  <canvas id="particles-canvas"></canvas>
+  <div class="home-inner">
+    <div class="home-photo-col">
+      <div class="photo-frame">
+        <!-- To add your photo: replace this div with <img src="photo.jpg" alt="Ariana Molina"> -->
+        <img src="arianaprofile.png" alt="Ariana Molina" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+      </div>
+      <div class="home-name">Ariana Molina</div>
+      <div class="home-titles">
+        <span>MSc in Economics</span>
+        <span>UX Researcher</span>
+      </div>
+    </div>
+
+    <div class="home-text-content">
+      <div class="home-tagline typewriter" id="typewriter-tagline">Turning data into decisions.</div>
+      <div class="home-role">UX Researcher &amp; Data Analyst</div>
+      <div class="home-desc">
+        <p>With several years of experience at <strong>Academic Work, CERN, and UBS</strong>, I bring a strong analytical background.</p>
+        <p>My approach combines <strong>analytics, UX thinking, and experimentation</strong> to translate data into impactful insights.</p>
+        <p>I focus on turning complex data into simple insights, while ensuring that diverse user perspectives — including those of <strong>underrepresented and often overlooked groups</strong> — are thoughtfully considered.</p>
+      </div>
+      <div class="home-cta">
+        <a href="#" class="btn btn-purple" onclick="goTo('work');return false;">View projects</a>
+        <a href="https://drive.google.com/file/d/1RzJFGUnyrL5veYITiLxnNQrFTWKRz8jS/view?usp=drive_link" class="btn btn-blue" target="_blank">Download CV</a>
+        <a href="#" class="btn btn-teal" onclick="goTo('contact');return false;">Contact</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── EXPERIENCE ── -->
+<div class="page" id="page-experience">
+  <div class="experience-layout">
+    <div class="exp-sidebar">
+      <div class="exp-item active" onclick="selectExp(0,this)">
+        <div class="exp-item-year">2025</div>
+        <div class="exp-item-role">ESG Project Coordinator · ExcellGene</div>
+      </div>
+      <div class="exp-item" onclick="selectExp(1,this)">
+        <div class="exp-item-year">2024</div>
+        <div class="exp-item-role">Science Communicator · CERN</div>
+      </div>
+      <div class="exp-item" onclick="selectExp(2,this)">
+        <div class="exp-item-year">2024</div>
+        <div class="exp-item-role">Data Analyst & Researcher · CERN</div>
+      </div>
+      <div class="exp-item" onclick="selectExp(3,this)">
+        <div class="exp-item-year">2023</div>
+        <div class="exp-item-role">Data Entry Consultant · SIE SA</div>
+      </div>
+      <div class="exp-item" onclick="selectExp(4,this)">
+        <div class="exp-item-year">2022</div>
+        <div class="exp-item-role">Receptionist · Credit Suisse (UBS AG)</div>
+      </div>
+      <div class="exp-item" onclick="selectExp(5,this)">
+        <div class="exp-item-year">2021</div>
+        <div class="exp-item-role">Financial Analyst · Canton of Vaud</div>
+      </div>
+    </div>
+    <div class="exp-content" id="exp-detail"></div>
+  </div>
+</div>
+
+<!-- ── MY APPROACH ── -->
+<div class="page" id="page-approach">
+  <div class="approach-page">
+    <div class="page-heading">My Main Approach</div>
+    <div class="approach-cards">
+      <div class="approach-card purple-card">
+        <div class="approach-card-img" style="padding:0;overflow:hidden;"><img src="research.png" alt="Research" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="approach-card-body">
+          <div class="approach-card-title">Research</div>
+          <div class="approach-card-desc">Understanding behavior through data and observation. I design studies that reveal what users truly need.</div>
+        </div>
+      </div>
+      <div class="approach-card teal-card">
+        <div class="approach-card-img" style="padding:0;overflow:hidden;"><img src="analysis.png" alt="Analysis" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="approach-card-body">
+          <div class="approach-card-title">Analysis</div>
+          <div class="approach-card-desc">Transforming complex data into clear insights. I translate numbers and patterns into meaningful, actionable findings.</div>
+        </div>
+      </div>
+      <div class="approach-card cyan-card">
+        <div class="approach-card-img" style="padding:0;overflow:hidden;"><img src="impact.png" alt="Impact" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="approach-card-body">
+          <div class="approach-card-title">Impact</div>
+          <div class="approach-card-desc">Driving decisions that improve real-world outcomes. My work creates measurable change for users and organizations.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="principles-title">My Guiding Principles</div>
+    <div class="principles-grid">
+      <div class="principle-card">
+        <span class="principle-icon"><img src="diversityandinclusion.png" alt="Inclusion & Diversity"></span>
+        <h4>Inclusion &amp; Diversity</h4>
+        <p>As someone with a multicultural background, I place strong importance on building inclusive environments where diverse perspectives are valued. I aim to ensure that data-driven decisions reflect the needs of all users — including those who are often underrepresented.</p>
+      </div>
+      <div class="principle-card">
+        <span class="principle-icon"><img src="continuouslearning.png" alt="Continuous Learning"></span>
+        <h4>Continuous Learning</h4>
+        <p>I see learning as an ongoing process. In a rapidly evolving field, I actively seek to expand my knowledge — whether through new technologies, research methods, or interdisciplinary perspectives.</p>
+      </div>
+      <div class="principle-card">
+        <span class="principle-icon"><img src="curiosity.png" alt="Curiosity"></span>
+        <h4>Curiosity</h4>
+        <p>Curiosity drives my work. I constantly question assumptions, explore patterns, and look beyond the obvious to better understand behaviors and uncover meaningful insights.</p>
+      </div>
+      <div class="principle-card">
+        <span class="principle-icon"><img src="trust.png" alt="Trust & Integrity"></span>
+        <h4>Trust &amp; Integrity</h4>
+        <p>I believe that trust is essential in both data and collaboration. I strive to ensure that my analyses are transparent, reliable, and ethically grounded, while building strong and respectful relationships with stakeholders.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SELECTED WORK ── -->
+<div class="page" id="page-work">
+  <div class="work-page">
+    <div class="page-heading">Selected Work</div>
+    <div class="work-top-grid">
+      <div class="work-cat" onclick="showWork('reports',this)">
+        <img src="reports.png" alt="Reports" style="width:72px;height:72px;object-fit:contain;margin-bottom:14px;">
+        <h3>Reports</h3>
+        <p>Crafting data-driven insights from data.</p>
+        <span class="work-cat-link">View reports -&gt;</span>
+      </div>
+      <div class="work-cat" onclick="showWork('papers',this)">
+        <img src="researchpapers.png" alt="Research Papers" style="width:72px;height:72px;object-fit:contain;margin-bottom:14px;">
+        <h3>Research Papers</h3>
+        <p>A collection of research papers.</p>
+        <span class="work-cat-link blue">View papers -&gt;</span>
+      </div>
+      <div class="work-cat" onclick="showWork('design',this)">
+        <img src="UXdesign.png" alt="UX/UI Design" style="width:72px;height:72px;object-fit:contain;margin-bottom:14px;">
+        <h3>UX/UI Design Projects</h3>
+        <p>Creating user-centered digital experience.</p>
+        <span class="work-cat-link teal">View projects -&gt;</span>
+      </div>
+    </div>
+
+    <div class="work-sub" id="work-reports">
+      <h3 style="font-size:1rem;font-weight:700;margin-bottom:18px;">Reports</h3>
+      <a href="https://drive.google.com/file/d/1KbQlaSQvNeTPuH8zZ8ns8xSP9dnXKgRQ/view?usp=drive_link" target="_blank" class="report-card" style="text-decoration:none;color:inherit;display:flex;cursor:pointer;">
+        <div class="report-thumb">ExcellGene<br>Sustainability<br>Report 2025</div>
+        <div class="report-info">
+          <h4>Sustainability Report — ExcellGene 2025</h4>
+          <p>ESG environmental analysis and reporting for a Swiss biotech company.</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="work-sub" id="work-papers">
+      <h3 style="font-size:1rem;font-weight:700;margin-bottom:16px;">Research papers</h3>
+      <div class="paper-cats">
+        <span class="paper-cat active" data-category="all">All</span>
+        <span class="paper-cat" data-category="mathematics">Mathematics</span>
+        <span class="paper-cat" data-category="economics">Economics</span>
+        <span class="paper-cat" data-category="cs">Computer Science</span>
+        <span class="paper-cat" data-category="sociology">Sociology</span>
+        <span class="paper-cat" data-category="ethics">Ethics &amp; Religion</span>
+        <span class="paper-cat" data-category="politics">Politics</span>
+      </div>
+      <div class="papers-list" id="papers-all" style="margin-top:20px;">
+        <ul style="list-style:none;padding:0;">
+          <li style="margin-bottom:12px;">
+            <a href="https://zenodo.org/records/19516959" target="_blank" style="color:var(--purple);text-decoration:none;font-size:0.95rem;font-weight:500;transition:color 0.2s;">
+              Arianean Arithmetic: Peano Arithmetic over Belnap's Four-Valued Logic (2026)
+            </a>
+          </li>
+          <li style="margin-bottom:12px;">
+            <a href="https://zenodo.org/records/19600183" target="_blank" style="color:var(--purple);text-decoration:none;font-size:0.95rem;font-weight:500;transition:color 0.2s;">
+              Assessing the Relationship Between Energy-Efficient Renovations and Swiss Households Health: A Longitudinal Study from 2013 to 2023 (2025)
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="papers-list" id="papers-mathematics" style="margin-top:20px;display:none;">
+        <ul style="list-style:none;padding:0;">
+          <li style="margin-bottom:12px;">
+            <a href="https://zenodo.org/records/19516959" target="_blank" style="color:var(--purple);text-decoration:none;font-size:0.95rem;font-weight:500;transition:color 0.2s;">
+              Arianean Arithmetic: Peano Arithmetic over Belnap's Four-Valued Logic (2026)
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="papers-list" id="papers-economics" style="margin-top:20px;display:none;">
+        <ul style="list-style:none;padding:0;">
+          <li style="margin-bottom:12px;">
+            <a href="https://zenodo.org/records/19600183" target="_blank" style="color:var(--purple);text-decoration:none;font-size:0.95rem;font-weight:500;transition:color 0.2s;">
+              Assessing the Relationship Between Energy-Efficient Renovations and Swiss Households Health: A Longitudinal Study from 2013 to 2023 (2025)
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="papers-list" id="papers-cs" style="margin-top:20px;display:none;">
+      </div>
+      <div class="papers-list" id="papers-sociology" style="margin-top:20px;display:none;">
+      </div>
+      <div class="papers-list" id="papers-ethics" style="margin-top:20px;display:none;">
+      </div>
+      <div class="papers-list" id="papers-politics" style="margin-top:20px;display:none;">
+      </div>
+    </div>
+
+    <div class="work-sub" id="work-design">
+      <h3 style="font-size:1rem;font-weight:700;margin-bottom:18px;">UI / UX Design</h3>
+      <a href="https://www.figma.com/proto/l3C1N1dpYdsfjZ6MEqYUYR/KCC-App?node-id=0-1&t=dflAaLbjxuSosCEs-1" target="_blank" class="report-card" style="text-decoration:none;color:inherit;display:flex;cursor:pointer;">
+        <div class="report-thumb" style="background:linear-gradient(135deg,#1a4a9e,#2d6eb8,#4a8fd4);color:var(--white);">Crypto<br>Mobile App<br>Idea</div>
+        <div class="report-info">
+          <h4>Idea for Nexi: Crypto App</h4>
+          <p>Mobile cryptocurrency wallet design with transaction tracking and portfolio management.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ── ABOUT ── -->
+<!-- ── ABOUT ── -->
+<div class="page" id="page-about">
+  <div class="about-inner">
+    <div>
+      <h2 class="about-me-title">About me</h2>
+      <div class="about-photo">
+        <img src="aboutme.jpg" alt="Ariana Molina" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+      </div>
+      <p class="about-caption">Some elements representing different aspects of my personality.</p>
+    </div>
+    <div class="about-text">
+      <p>I'm <strong>Ariana Molina</strong>, a UX Researcher and Data Analyst with a multicultural background — born in Ecuador, and with 3 different nationalities, I have lived and worked across 5 different countries, which has given me a unique ability to understand diverse perspectives and adapt quickly to new environments.</p>
+      <p>My academic journey led me to a <strong>Master's degree in Applied Economics</strong> at the University of Neuchâtel, where I developed a strong foundation in statistical modeling, data analysis and behavioral economics.</p>
+      <p>As a neurodivergent person, I experience the world with an intensity and curiosity that I consider one of my greatest strengths. I'm naturally wired to seek novelty, make unexpected connections between ideas, and dive deep into complex problems until I find meaningful answers. This is not a limitation — it's the engine behind my creativity, my drive to keep learning, and my ability to bring alternative perspectives to every project I work on.</p>
+      <p>I deeply value <strong>inclusion and equal representation</strong> — not just as professional values, but as lived experience. When I'm not analyzing data or designing research studies, you'll find me playing chess, exploring via ferratas, or cooking dishes from everywhere around the world just for fun.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONTACT ── -->
+<div class="page" id="page-contact">
+  <div class="contact-city-bg"></div>
+  <div class="contact-inner">
+    <div style="max-width:480px;width:100%;">
+      <h2>Contact</h2>
+      <div class="contact-items">
+
+        <div class="contact-item">
+          <div class="contact-ico">
+            <img src="email.png" alt="Email">
+          </div>
+          <a href="mailto:ariana.molina.c@outlook.com">
+            ariana.molina.c@outlook.com
+          </a>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-ico">
+            <img src="linkedin.png" alt="LinkedIn">
+          </div>
+          <a href="https://www.linkedin.com/in/ariana-m-c-278146181/" target="_blank">
+            linkedin.com/in/ariana-m-c-278146181
+          </a>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-ico">
+            <img src="location.png" alt="Location">
+          </div>
+          <span>
+            Based in Lausanne, Switzerland — open to opportunities in Geneva, Zurich and remote.
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const pages = ['home','experience','approach','work','about','contact'];
+const labels = { home:'Home', experience:'Experience', approach:'My Approach', work:'Selected Work', about:'About', contact:'Contact' };
+let current = 'home';
+
+function goTo(page) {
+  if (page === current) return;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  current = page;
+  updateNavActive();
+  if (page === 'experience') selectExp(0, document.querySelector('.exp-item'));
+  if (page === 'home') restartTypewriter();
+}
+
+function updateNavActive() {
+  pages.forEach(p => {
+    const el = document.getElementById('nav-' + p);
+    if (el) el.classList.toggle('nav-active', p === current);
+  });
+}
+
+function restartTypewriter() {
+  const el = document.getElementById('typewriter-tagline');
+  el.classList.remove('typewriter');
+  void el.offsetWidth; // force reflow
+  el.classList.add('typewriter');
+}
+
+// Experience
+const expData = [
+  { img:'excellgene.png', bg:'linear-gradient(135deg,#0d2b0d,#1a4a1a,#2d6e2d)', title:'ESG Project Coordinator', org:'ExcellGene SA · 2025', desc:'Led sustainability reporting and ESG initiatives for a Swiss biotech company. Produced the ExcellGene Sustainability Report 2025, covering environmental, social, and governance dimensions.', tags:[{l:'Biotech',c:'tag-teal'},{l:'Sustainability',c:'tag-teal'},{l:'CO2 Calculation',c:'tag-purple'},{l:'KPI Creation',c:'tag-purple'},{l:'Risk Management',c:'tag-purple'},{l:'Data Analysis',c:'tag-purple'}] },
+  { img:'cernsciencecommunication.png', bg:'linear-gradient(135deg,#0a0a1a,#1a1040,#2d1b69)', title:'Science Communicator', org:'CERN · 2024', desc:'Communicated complex scientific concepts to diverse audiences at one of the world\'s leading physics research centers. Designed and delivered engaging content bridging science and the general public.', tags:[{l:'Scientific Communication',c:'tag-teal'},{l:'Science Gateway',c:'tag-teal'},{l:'Communication',c:'tag-purple'},{l:'Public Outreach',c:'tag-purple'}] },
+  { img:'cerndataanalyst.png', bg:'linear-gradient(135deg,#0a0a1a,#1a1040,#2d1b69)', title:'Data Analyst & Researcher', org:'CERN · Internship 2024', desc:'Conducted behavioral data analysis and UX research in scientific environments. Analyzed visitor interaction patterns and designed user experiments to improve engagement.', tags:[{l:'Particle Physics Research',c:'tag-teal'},{l:'Department of Exhibitions',c:'tag-teal'},{l:'R',c:'tag-purple'},{l:'Data Analysis',c:'tag-purple'},{l:'Excel',c:'tag-purple'},{l:'UX Research',c:'tag-purple'},{l:'Python',c:'tag-purple'}] },
+  { img:'siesa.png', bg:'linear-gradient(135deg,#1a1a2e,#2d2d50,#1a3a6a)', title:'Data Entry Consultant', org:'SIE SA · 2023', desc:'Provided data management and entry consulting services, ensuring data accuracy, consistency, and reliability across organizational systems.', tags:[{l:'Energy',c:'tag-teal'},{l:'Excel',c:'tag-purple'},{l:'SAP',c:'tag-purple'},{l:'Web Site Management',c:'tag-purple'},{l:'Power BI',c:'tag-purple'}] },
+  { img:'creditsuisse.png', bg:'linear-gradient(135deg,#0a1628,#1a2d4a,#2d4a6e)', title:'Receptionist', org:'Credit Suisse (UBS AG) · 2022', desc:"Provided front-desk services at one of Switzerland's leading financial institutions, developing strong interpersonal and organizational skills in a high-standard corporate environment.", tags:[{l:'Banking',c:'tag-teal'},{l:'Client Relations',c:'tag-purple'},{l:'Excel',c:'tag-purple'},{l:'CDB20',c:'tag-purple'}] },
+  { img:'cantonvaud.png', bg:'linear-gradient(135deg,#1a0a0a,#3a1a1a,#5a2020)', title:'File Manager', org:'Canton of Vaud · 2021', desc:'Performed financial analysis and data entry tasks for the Canton of Vaud, contributing to public sector financial reporting and budget monitoring.', tags:[{l:'Public Sector',c:'tag-teal'},{l:'Jira',c:'tag-purple'},{l:'Financial Analysis',c:'tag-purple'},{l:'Stakeholder Relations',c:'tag-purple'},{l:'Excel',c:'tag-purple'}] },
+];
+
+function selectExp(idx, el) {
+  document.querySelectorAll('.exp-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  const d = expData[idx];
+
+  const extra = d.extra 
+    ? `<ul style="margin:8px 0 0 16px;">
+        ${d.extra.map(e=>`<li style="font-size:0.76rem;color:var(--mid);line-height:1.8;">${e}</li>`).join('')}
+       </ul>` 
+    : '';
+
+  document.getElementById('exp-detail').innerHTML = `
+    <div class="exp-card">
+      <div class="exp-card-visual" style="background:${d.bg};">
+        ${d.img 
+          ? `<img src="${d.img}" alt="${d.title}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">`
+          : `<span style="position:relative;z-index:1;font-size:2.8rem;">${d.icon}</span>`
+        }
+      </div>
+
+      <div class="exp-card-body">
+        <h3>${d.title}</h3>
+        <div class="exp-card-subtitle">${d.org}</div>
+        <div class="exp-card-desc">${d.desc}${extra}</div>
+        <div class="exp-tags">
+          ${d.tags.map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+function showWork(type, el) {
+  document.querySelectorAll('.work-cat').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.work-sub').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('work-' + type).classList.add('active');
+}
+
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('paper-cat')) {
+    document.querySelectorAll('.paper-cat').forEach(t => t.classList.remove('active'));
+    e.target.classList.add('active');
+    
+    // Get selected category
+    const category = e.target.getAttribute('data-category');
+    
+    // If "All" is selected, show all papers
+    if (category === 'all') {
+      document.querySelectorAll('.papers-list').forEach(p => p.style.display = 'block');
+    } else {
+      // Hide all paper lists
+      document.querySelectorAll('.papers-list').forEach(p => p.style.display = 'none');
+      
+      // Show the selected category's papers
+      const papersList = document.getElementById('papers-' + category);
+      if (papersList) papersList.style.display = 'block';
+    }
+  }
+});
+
+// Init
+updateNavActive();
+selectExp(0, document.querySelector('.exp-item'));
+
+// Particle animation for home page with network connections
+class ParticleAnimation {
+  constructor() {
+    this.canvas = document.getElementById('particles-canvas');
+    if (!this.canvas) return;
+    
+    this.ctx = this.canvas.getContext('2d');
+    this.particles = [];
+    this.particleCount = 80;
+    this.maxDistance = 150;
+    this.resize();
+    this.init();
+    this.animate();
+    
+    window.addEventListener('resize', () => this.resize());
+  }
+  
+  resize() {
+    this.canvas.width = this.canvas.offsetWidth;
+    this.canvas.height = this.canvas.offsetHeight;
+  }
+  
+  init() {
+    this.particles = [];
+    for (let i = 0; i < this.particleCount; i++) {
+      this.particles.push({
+        x: Math.random() * this.canvas.width,
+        y: Math.random() * this.canvas.height,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        radius: Math.random() * 1.5 + 1
+      });
+    }
+  }
+  
+  drawLines() {
+    for (let i = 0; i < this.particles.length; i++) {
+      for (let j = i + 1; j < this.particles.length; j++) {
+        const dx = this.particles[i].x - this.particles[j].x;
+        const dy = this.particles[i].y - this.particles[j].y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < this.maxDistance) {
+          const opacity = (1 - distance / this.maxDistance) * 0.35;
+          this.ctx.beginPath();
+          this.ctx.strokeStyle = `rgba(107, 63, 245, ${opacity})`;
+          this.ctx.lineWidth = 1;
+          this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
+          this.ctx.lineTo(this.particles[j].x, this.particles[j].y);
+          this.ctx.stroke();
+        }
+      }
+    }
+  }
+  
+  animate() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    
+    // Draw connecting lines
+    this.drawLines();
+    
+    // Draw and update particles
+    this.particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      
+      if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
+      
+      this.ctx.beginPath();
+      this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      this.ctx.fillStyle = 'rgba(107, 63, 245, 0.5)';
+      this.ctx.fill();
+    });
+    
+    requestAnimationFrame(() => this.animate());
+  }
+}
+
+// Only start animation when on home page
+if (document.getElementById('particles-canvas')) {
+  new ParticleAnimation();
+}
+</script>
+</body>
+</html>
