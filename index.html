@@ -1778,6 +1778,34 @@ function showRenovationDetail() {
   setTimeout(initializeSwissMap, 100);
 }
 
+function initializeSwissMap() {
+  const svg = d3.select("#swiss-map");
+  const width = 600;
+  const height = 400;
+
+  const projection = d3.geoMercator()
+    .center([8.3, 46.8])
+    .scale(8000)
+    .translate([width / 2, height / 2]);
+
+  const path = d3.geoPath().projection(projection);
+
+  d3.json("switzerland.geojson").then(function(data) {
+
+    svg.select("#cantons-group")
+      .selectAll("path")
+      .data(data.features)
+      .enter()
+      .append("path")
+      .attr("d", path)
+      .attr("class", "canton-path")
+      .attr("fill", "#93C5FD");
+
+  }).catch(function(error) {
+    console.error("Error loading map:", error);
+  });
+}
+
 function hideRenovationDetail() {
   document.getElementById('renovation-detail').classList.remove('active');
   document.body.style.overflow = '';
