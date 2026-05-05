@@ -1775,7 +1775,7 @@ function showRenovationDetail() {
   document.getElementById('renovation-detail').classList.add('active');
   document.body.style.overflow = 'hidden';
   // Initialize map after detail page is shown
-  setTimeout(initializeSwissMap, 100);
+ requestAnimationFrame(() => initializeSwissMap());
 }
 
 function initializeSwissMap() {
