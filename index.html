@@ -1,0 +1,3813 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ariana Molina — UX Researcher & Data Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --purple: #6B3FF5;
+  --purple-light: #EEE8FF;
+  --teal: #2BC0B4;
+  --teal-light: #E0F7F5;
+  --dark: #111111;
+  --mid: #555566;
+  --border: #E5E5F0;
+  --white: #FFFFFF;
+  --nav-height: 90px;
+  --left-panel: 220px;
+  --exp-sidebar: 380px;
+  
+  /* ExcellGene Colors */
+  --green-dark: #1a8e50;
+  --green-medium: #00bf63;
+  --green-light: #8dedb2;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background: var(--white);
+  color: var(--dark);
+  overflow: hidden;
+}
+
+/* ════ NAV ════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-height);
+  background: var(--white);
+  display: flex;
+  align-items: stretch;
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+  contain: layout;
+}
+
+.nav-active-panel { display: none; }
+
+.nav-center {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.nav-center a {
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--dark);
+  text-decoration: none;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  position: relative;
+  transition: color 0.18s;
+}
+
+.nav-center a:hover { color: var(--purple); }
+
+.nav-center a.nav-active {
+  color: var(--purple);
+  font-weight: 600;
+  background: var(--purple-light);
+}
+
+.nav-center a.nav-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--purple);
+  border-radius: 2px 2px 0 0;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  padding-right: 32px;
+}
+
+.lang-btn {
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 16px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--dark);
+  background: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.18s;
+}
+.lang-btn:hover { border-color: var(--purple); }
+
+/* ════ PAGES ════ */
+.page {
+  display: none;
+  position: fixed;
+  top: var(--nav-height);
+  left: 0; right: 0; bottom: 0;
+  overflow-y: auto;
+  background: var(--white);
+  animation: pageFade 0.28s ease;
+}
+
+.page.active { display: block; }
+
+#page-home.active,
+#page-about.active,
+#page-contact.active {
+  display: flex;
+}
+
+@keyframes pageFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ════ HOME ════ */
+#page-home {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#particles-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.home-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  align-items: center;
+  gap: 80px;
+  padding: 80px;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.home-photo-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.photo-frame {
+  width: 240px;
+  height: 280px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--purple-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--purple);
+  opacity: 0.45;
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 20px;
+}
+
+.home-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--dark);
+  text-align: center;
+}
+
+.home-titles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.home-titles span {
+  font-size: 0.8rem;
+  color: var(--mid);
+  font-weight: 400;
+  text-align: center;
+}
+
+.home-tagline {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.home-text-content {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.home-role {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--dark);
+  margin-bottom: 24px;
+}
+
+.home-desc p {
+  font-size: 0.86rem;
+  line-height: 1.75;
+  color: var(--mid);
+  margin-bottom: 10px;
+  max-width: 540px;
+}
+
+.home-desc strong { color: var(--dark); font-weight: 600; }
+
+.home-cta {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  transition: opacity 0.18s, transform 0.18s;
+}
+.btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.btn-purple { background: var(--purple); color: #fff; }
+.btn-teal   { background: var(--teal);   color: #fff; }
+.btn-blue { background: #3399FF; color: #fff;}
+
+/* ════ EXPERIENCE ════ */
+.experience-layout {
+  display: grid;
+  grid-template-columns: var(--exp-sidebar) 1fr;
+  height: 100%;
+  min-height: calc(100vh - var(--nav-height));
+}
+
+.exp-sidebar {
+  border-right: 1px solid var(--border);
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.exp-sidebar::before {
+  content: '';
+  position: absolute;
+  left: 30px;
+  top: 55px; bottom: 55px;
+  width: 2px;
+  background: var(--border);
+}
+
+.exp-item {
+  padding: 16px 20px 16px 52px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+  border-radius: 0 12px 12px 0;
+  margin-right: 16px;
+}
+
+.exp-item::before {
+  content: '';
+  position: absolute;
+  left: 23px;
+  top: 22px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid #CCC;
+  transition: all 0.2s;
+  z-index: 1;
+}
+
+.exp-item.active { background: var(--purple-light); }
+.exp-item.active::before { background: var(--purple); border-color: var(--purple); }
+
+.exp-item-year {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--purple);
+  margin-bottom: 5px;
+}
+
+.exp-item-role {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--dark);
+  line-height: 1.45;
+}
+
+.exp-content {
+  padding: 56px 60px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.exp-card {
+  background: var(--white);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 4px 28px rgba(0,0,0,0.09);
+  width: 100%;
+  max-width: 620px;
+}
+
+.exp-card-visual {
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  position: relative;
+}
+
+.exp-card-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 60%, rgba(107,63,245,0.45) 0%, transparent 65%);
+}
+
+.exp-card-body { padding: 22px; }
+
+.exp-card-body h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.exp-card-subtitle {
+  font-size: 0.78rem;
+  color: var(--mid);
+  margin-bottom: 12px;
+}
+
+.exp-card-desc {
+  font-size: 0.8rem;
+  color: var(--mid);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.exp-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.tag {
+  padding: 4px 11px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.tag-purple { background: var(--purple-light); color: var(--purple); }
+.tag-teal   { background: var(--teal-light);   color: #1a9e94; }
+
+/* ════ APPROACH ════ */
+.approach-page {
+  padding: 48px 80px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-heading {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.approach-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 52px;
+}
+
+.approach-card {
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.22s, box-shadow 0.22s;
+}
+.approach-card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,0,0,0.1); }
+
+
+.approach-card-img {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+}
+
+.approach-card-img img {
+  transition: transform 0.3s ease;
+}
+
+.approach-card:hover img {
+  transform: scale(1.03);
+}
+
+
+.approach-card.purple-card { background: var(--purple-light); }
+.approach-card.teal-card   { background: #E6F4FF; }
+.approach-card.cyan-card   { background: var(--teal-light); }
+
+.approach-card-body { padding: 20px 22px 24px; }
+
+.approach-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.approach-card.purple-card .approach-card-title { color: var(--purple); }
+.approach-card.teal-card   .approach-card-title { color: #3399FF; }
+.approach-card.cyan-card   .approach-card-title { color: var(--teal); }
+
+.approach-card-desc {
+  font-size: 0.8rem;
+  color: var(--mid);
+  line-height: 1.65;
+}
+
+.principles-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 24px;
+  color: var(--dark);
+}
+
+.principles-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.principle-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 18px;
+  text-align: center;
+  background: var(--white);
+  transition: box-shadow 0.2s;
+}
+.principle-card:hover { box-shadow: 0 8px 24px rgba(107,63,245,0.1); }
+
+.principle-icon img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+.principle-card h4 {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+
+.principle-card p {
+  font-size: 0.74rem;
+  color: var(--mid);
+  line-height: 1.65;
+}
+
+/* ════ SELECTED WORK ════ */
+.work-page {
+  padding: 48px 80px 60px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.work-top-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 40px;
+}
+
+.work-cat {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.22s;
+}
+.work-cat:hover, .work-cat.active {
+  border-color: var(--purple);
+  box-shadow: 0 8px 24px rgba(107,63,245,0.1);
+}
+
+.work-cat-icon { font-size: 2.2rem; margin-bottom: 14px; display: block; }
+.work-cat h3   { font-size: 0.92rem; font-weight: 700; margin-bottom: 10px; }
+.work-cat p    { font-size: 0.76rem; color: var(--mid); line-height: 1.55; margin-bottom: 14px; }
+
+.work-cat-link       { font-size: 0.78rem; font-weight: 600; color: var(--purple); }
+.work-cat-link.blue  { color: #3399FF; }
+
+.work-cat-link.teal  { color: #2BC0B4; }
+
+.work-sub { display: none; }
+.work-sub.active { display: block; }
+
+.report-card {
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  max-width: 480px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.report-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+
+.report-thumb {
+  width: 130px;
+  min-height: 110px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #FF6B35 0%, #F2994A 40%, #9B51E0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 12px;
+  line-height: 1.5;
+}
+
+.report-info { padding: 18px 22px; }
+.report-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--dark); line-height: 1.4; }
+.report-info p  { font-size: 0.74rem; color: var(--mid); margin-top: 6px; }
+
+.paper-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.paper-cat {
+  padding: 8px 18px;
+  border-radius: 24px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border: 1.5px solid var(--border);
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.18s;
+  background: var(--white);
+}
+.paper-cat:hover, .paper-cat.active {
+  background: var(--purple);
+  color: #fff;
+  border-color: var(--purple);
+}
+
+/* ════ ABOUT ════ */
+#page-about {
+  align-items: flex-start;   /* remonte tout */
+  justify-content: center;
+  padding-top: 20px;         /* réduit l’espace en haut */
+}
+
+.about-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 56px;
+  padding: 48px 48px 48px 40px;
+  align-items: flex-start;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.about-text {
+  padding-top: 40px;
+}
+
+.about-text p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.about-photo {
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 4/3;
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--purple-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.about-me-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 20px;   /* updated */
+  text-align: left;
+  padding-left: 40px;    /* added */
+}
+
+.about-caption {
+  font-size: 0.74rem;
+  color: var(--mid);
+  margin-top: 10px;
+  font-style: italic;
+  text-align: center;
+}
+
+.about-text h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 22px;
+}
+
+.about-text p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--mid);
+  margin-bottom: 14px;
+  text-align: justify;
+}
+
+.about-text strong { color: var(--dark); font-weight: 600; }
+
+/* ════ CONTACT ════ */
+#page-contact {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(107,63,245,0.05),
+    rgba(43,192,180,0.05)
+  );
+}
+
+#page-contact::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 30% 40%,
+    rgba(107,63,245,0.15),
+    transparent 60%
+  );
+  z-index: 0;
+
+  animation: glowMove 12s ease-in-out infinite;
+}
+
+#page-contact.active {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-city-bg { display: none; }
+
+.contact-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.contact-inner h2 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 48px;
+  text-align: left;
+}
+
+.contact-items { display: flex; flex-direction: column; gap: 32px; }
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 1.15rem;
+}
+
+.contact-ico {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--purple-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden; /* IMPORTANT */
+}
+
+.contact-ico img {
+  width: 20px !important;
+  height: 20px !important;
+  object-fit: contain;
+  position: static !important;
+}
+
+.contact-item a {
+  color: var(--dark);
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 1.15rem;
+  transition: color 0.18s;
+}
+.contact-item a:hover { color: var(--purple); }
+.contact-item span { color: var(--mid); font-weight: 300; font-size: 1.05rem; line-height: 1.55; }
+
+/* scrollbar */
+.page::-webkit-scrollbar { width: 4px; }
+.page::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ════ TYPEWRITER ════ */
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--purple);
+  width: 0;
+  animation: typing 2s steps(30, end) forwards, blink 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@keyframes glowMove {
+  0% { transform: translate(0,0); }
+  50% { transform: translate(20px, -20px); }
+  100% { transform: translate(0,0); }
+}
+
+@keyframes blink {
+  0%, 100% { border-color: var(--purple); }
+  50%       { border-color: transparent; }
+}
+
+/* ════ ANALYTICS PORTFOLIO ════ */
+.analytics-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 60px;
+}
+
+.analytics-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 80px;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.analytics-title::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  background: var(--purple);
+  border-radius: 2px;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.analytics-card {
+  position: relative;
+  height: 420px;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.analytics-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+}
+
+.analytics-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.analytics-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 40px 30px;
+  color: white;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+}
+
+.analytics-card:nth-child(1) .analytics-card-overlay {
+  background: linear-gradient(to top, rgba(107, 63, 245, 0.92) 0%, rgba(107, 63, 245, 0.5) 60%, transparent 100%);
+}
+
+.analytics-card:nth-child(2) .analytics-card-overlay {
+  background: linear-gradient(to top, rgba(17, 17, 17, 0.92) 0%, rgba(17, 17, 17, 0.5) 60%, transparent 100%);
+}
+
+.analytics-card:nth-child(3) .analytics-card-overlay {
+  background: linear-gradient(to top, rgba(219, 93, 68, 0.92) 0%, rgba(219, 93, 68, 0.5) 60%, transparent 100%);
+}
+
+.analytics-card-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: white;
+}
+
+/* ════ ENERGY RENOVATION DETAIL PAGE ════ */
+.renovation-detail {
+  display: none;
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--white);
+  z-index: 90;
+  overflow-y: auto;
+}
+
+.renovation-detail.active {
+  display: block;
+}
+
+.renovation-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 60px 80px;
+}
+
+.back-arrow {
+  display: inline-flex;
+  align-items: center;
+  color: var(--mid);
+  text-decoration: none;
+  font-size: 2rem;
+  transition: color 0.2s;
+  cursor: pointer;
+  position: absolute;
+  left: -50px;
+  top: 0;
+}
+
+.back-arrow:hover {
+  color: var(--purple);
+}
+
+.project-header {
+  margin-bottom: 50px;
+}
+
+.project-title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.project-subtitle {
+  font-size: 1.1rem;
+  color: var(--mid);
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+
+.project-meta {
+  font-size: 0.95rem;
+  color: var(--mid);
+}
+
+.content-section {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px;
+  margin-bottom: 30px;
+}
+
+.map-section {
+  background: #F8F9FA;
+  border-radius: 16px;
+  padding: 50px 40px;
+  margin-bottom: 50px;
+}
+
+.map-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.current-year {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 20px;
+}
+
+.map-container {
+  position: relative;
+  width: 100%;
+  background: #FAFAFA;
+  border-radius: 12px;
+  padding: 30px;
+  margin: 0 auto 20px;
+}
+
+#swiss-map {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  height: auto;
+}
+
+.canton-path {
+  stroke: #FFFFFF;
+  stroke-width: 1.5;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.canton-path:hover {
+  stroke-width: 2.5;
+  filter: brightness(0.9);
+}
+
+.slider-container {
+  margin-top: 30px;
+  padding: 20px 30px;
+  background: var(--white);
+  border-radius: 10px;
+}
+
+.slider-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.slider-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--mid);
+}
+
+.year-display {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--purple);
+  min-width: 60px;
+  text-align: right;
+}
+
+.play-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--purple);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  margin-left: 16px;
+  box-shadow: 0 2px 8px rgba(107, 63, 245, 0.3);
+}
+
+.play-button:hover {
+  background: #5A2FD8;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(107, 63, 245, 0.4);
+}
+
+.play-button:active {
+  transform: scale(0.95);
+}
+
+.year-slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #E0E7FF, #6B3FF5);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.year-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--purple);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(107, 63, 245, 0.4);
+  transition: transform 0.2s;
+}
+
+.year-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.year-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--purple);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(107, 63, 245, 0.4);
+  transition: transform 0.2s;
+}
+
+.year-slider::-moz-range-thumb:hover {
+  transform: scale(1.15);
+}
+
+.year-labels {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 12px;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--mid);
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.legend-color {
+  width: 32px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.map-tooltip {
+  position: absolute;
+  background: rgba(17, 17, 17, 0.95);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.map-tooltip.show {
+  opacity: 1;
+}
+
+.tooltip-canton {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.tooltip-value {
+  color: #93C5FD;
+}
+
+.text-section {
+  margin-bottom: 40px;
+  max-width: 900px;
+}
+
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.section-text {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #333;
+}
+
+.section-text em {
+  font-style: italic;
+  color: var(--purple);
+  font-weight: 500;
+}
+
+.thesis-link {
+  display: inline-block;
+  background: var(--purple-light);
+  color: var(--purple);
+  padding: 14px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.thesis-link:hover {
+  background: var(--purple);
+  color: white;
+}
+
+/* Info Cards Grid */
+.renovation-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin: 60px 0 40px;
+  max-width: 1200px;
+}
+
+.renovation-info-card {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 32px 28px;
+  transition: all 0.3s;
+}
+
+.renovation-info-card:hover {
+  border-color: var(--purple);
+  box-shadow: 0 8px 24px rgba(107, 63, 245, 0.15);
+  transform: translateY(-4px);
+}
+
+.renovation-info-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.renovation-info-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--mid);
+}
+
+/* Conclusion Card */
+.renovation-conclusion-card {
+  background: var(--purple-light);
+  border-radius: 16px;
+  padding: 40px;
+  margin: 40px 0 60px;
+  max-width: 1200px;
+  border: 2px solid rgba(107, 63, 245, 0.3);
+}
+
+.renovation-conclusion-card h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 16px;
+}
+
+.renovation-conclusion-card p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--dark);
+  margin-bottom: 16px;
+}
+
+.renovation-conclusion-card em {
+  font-style: italic;
+  font-weight: 600;
+}
+
+@media (max-width: 968px) {
+  .renovation-info-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* ════ EXCELLGENE STYLES ════ */
+.viz-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 80px;
+}
+
+.viz-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.viz-card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.scope-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.scope-box {
+  padding: 24px;
+  border-radius: 16px;
+  color: white;
+  text-align: center;
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.scope-box:nth-child(1) { animation-delay: 0.1s; }
+.scope-box:nth-child(2) { animation-delay: 0.2s; }
+.scope-box:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.scope-box.scope-1 { background: var(--green-dark); }
+.scope-box.scope-2 { background: var(--green-medium); }
+.scope-box.scope-3 { background: var(--green-light); }
+
+.scope-box h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.scope-box p {
+  font-size: 0.85rem;
+  opacity: 0.95;
+  line-height: 1.5;
+}
+
+.bars-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  padding: 0 20px;
+}
+
+.bar-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bar-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 120px;
+  height: 350px;
+  background: #F5F5F5;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.bar-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bar-segment {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bar-segment:first-child { border-top: none; }
+
+.segment-label {
+  font-size: 0.7rem;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.3;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.scope-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  justify-content: center;
+}
+
+.scope-btn {
+  padding: 12px 28px;
+  border-radius: 24px;
+  border: 2px solid var(--border);
+  background: white;
+  color: var(--dark);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Inter', sans-serif;
+}
+
+.scope-btn:hover {
+  border-color: var(--green-medium);
+  background: rgba(0, 191, 99, 0.05);
+  transform: translateY(-2px);
+}
+
+.scope-btn.active {
+  background: var(--green-medium);
+  color: white;
+  border-color: var(--green-medium);
+  box-shadow: 0 4px 12px rgba(0, 191, 99, 0.3);
+}
+
+#bubble-chart {
+  width: 100%;
+  height: 420px;
+}
+
+.scope-definitions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin: 40px 0 60px;
+}
+
+.scope-definition {
+  padding: 40px 28px;
+  border-radius: 20px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.scope-definition.scope-1 { background: linear-gradient(135deg, var(--green-dark) 0%, #15703d 100%); }
+.scope-definition.scope-2 { background: linear-gradient(135deg, var(--green-medium) 0%, #059669 100%); }
+.scope-definition.scope-3 { background: linear-gradient(135deg, var(--green-light) 0%, #6ee7b7 100%); }
+
+.scope-definition h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: white !important;
+}
+
+.scope-definition p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.95;
+  color: white !important;
+}
+
+.delimitation-image {
+  width: 100%;
+  max-width: 750px;
+  margin: 32px auto;
+  display: block;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.report-link-wrapper {
+  text-align: center;
+  margin: 60px 0;
+}
+
+.report-link {
+  display: inline-block;
+  padding: 16px 40px;
+  border: 2px solid var(--purple);
+  color: var(--purple);
+  text-decoration: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.report-link:hover {
+  background: var(--purple);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(107, 63, 245, 0.3);
+}
+
+.scroll-top-excellgene {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--purple);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(107, 63, 245, 0.4);
+  transition: all 0.3s;
+  z-index: 1000;
+}
+
+.scroll-top-excellgene:hover {
+  background: #5A2FD8;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(107, 63, 245, 0.5);
+}
+
+.scroll-top-excellgene svg {
+  width: 24px;
+  height: 24px;
+  stroke: white;
+  stroke-width: 2.5;
+  fill: none;
+}
+
+.excellgene-header {
+  margin-bottom: 60px;
+  padding-bottom: 32px;
+}
+
+.excellgene-header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.excellgene-header .subtitle {
+  font-size: 1.15rem;
+  color: var(--dark);
+  margin-bottom: 24px;
+  font-weight: 400;
+}
+
+.excellgene-header .separator {
+  width: 60px;
+  height: 3px;
+  background: var(--purple);
+  margin: 24px 0 20px 0;
+}
+
+.excellgene-header .meta {
+  font-size: 0.95rem;
+  color: var(--dark);
+  font-weight: 400;
+}
+
+.excellgene-content {
+  max-width: 900px;
+  margin: 0 auto 60px;
+  padding: 40px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
+}
+
+.excellgene-content h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 20px;
+}
+
+.excellgene-content p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--mid);
+  margin-bottom: 16px;
+}
+
+/* ════ CERN STYLES ════ */
+.cern-viz-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 80px;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cern-viz-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border);
+}
+
+.cern-viz-card h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.cern-exhibition-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 32px;
+  justify-content: center;
+}
+
+.cern-exhibition-btn {
+  padding: 12px 20px;
+  border-radius: 24px;
+  border: 2px solid var(--border);
+  background: white;
+  color: var(--dark);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+}
+
+.cern-exhibition-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cern-exhibition-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cern-exhibition-btn.cern-purple {
+  border-color: var(--purple);
+  color: var(--purple);
+}
+
+.cern-exhibition-btn.cern-purple.active {
+  background: var(--purple);
+  color: white;
+  box-shadow: 0 4px 12px rgba(107, 63, 245, 0.3);
+}
+
+.cern-exhibition-btn.cern-blue {
+  border-color: #3B82F6;
+  color: #3B82F6;
+}
+
+.cern-exhibition-btn.cern-blue.active {
+  background: #3B82F6;
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.cern-exhibition-btn.cern-green {
+  border-color: #10B981;
+  color: #10B981;
+}
+
+.cern-exhibition-btn.cern-green.active {
+  background: #10B981;
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.cern-exhibition-btn.cern-all-btn {
+  border-color: var(--dark);
+  color: var(--dark);
+  font-weight: 700;
+  padding: 12px 16px;
+  font-size: 0.85rem;
+}
+
+.cern-exhibition-btn.cern-all-btn:hover {
+  border-color: var(--dark);
+  background: rgba(17, 17, 17, 0.05);
+}
+
+.cern-exhibition-btn.cern-all-btn.active {
+  background: var(--dark);
+  color: white;
+  box-shadow: 0 4px 12px rgba(17, 17, 17, 0.3);
+}
+
+.cern-spider-chart-container {
+  width: 100%;
+  height: 400px;
+  position: relative;
+}
+
+.cern-exhibition-photos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin: 40px 0;
+}
+
+.cern-exhibition-photo {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.cern-exhibition-photo img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.cern-exhibition-photo p {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-top: 12px;
+  padding: 0 12px 12px;
+}
+
+@media (max-width: 968px) {
+  .cern-viz-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .cern-exhibition-photos {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .cern-exhibition-buttons {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .cern-exhibition-btn {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+  
+  .cern-exhibition-btn.cern-all-btn {
+    padding: 10px 14px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ════ HANTAVIRUS UNDER CONSTRUCTION STYLES ════ */
+.under-construction-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 60px 40px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.construction-icon {
+  margin-bottom: 32px;
+  opacity: 0.9;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.construction-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.construction-subtitle {
+  font-size: 1.3rem;
+  color: var(--purple);
+  font-weight: 600;
+  margin-bottom: 32px;
+}
+
+.construction-description {
+  background: var(--purple-light);
+  border-radius: 16px;
+  padding: 40px;
+  text-align: left;
+}
+
+.construction-description p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--dark);
+  margin-bottom: 20px;
+}
+
+.construction-features {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+}
+
+.construction-features li {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--dark);
+  padding-left: 32px;
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.construction-features li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--purple);
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.construction-note {
+  font-style: italic;
+  color: var(--mid);
+  font-size: 0.95rem;
+  margin-top: 24px;
+  margin-bottom: 0;
+}
+</style>
+</head>
+<body>
+
+<script>
+// Redirect to mobile version if screen is small
+if (window.innerWidth <= 768) {
+  window.location.href = 'mobile.html';
+}
+</script>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-active-panel"></div>
+  <div class="nav-center" id="nav-center-links">
+    <a href="#" id="nav-home"       onclick="goTo('home');return false;"       class="nav-active">Home</a>
+    <a href="#" id="nav-experience" onclick="goTo('experience');return false;"            >Experience</a>
+    <a href="#" id="nav-approach"   onclick="goTo('approach');return false;"              >My Approach</a>
+    <a href="#" id="nav-work"       onclick="goTo('work');return false;"                  >Selected Work</a>
+    <a href="#" id="nav-analytics"  onclick="goTo('analytics');return false;"             >Analytics Portfolio</a>
+    <a href="#" id="nav-about"      onclick="goTo('about');return false;"                 >About</a>
+    <a href="#" id="nav-contact"    onclick="goTo('contact');return false;"               >Contact</a>
+  </div>
+  <div class="nav-right">
+    <button class="lang-btn">ENG ▾</button>
+  </div>
+</nav>
+
+<!-- ── HOME ── -->
+<div class="page active" id="page-home">
+  <canvas id="particles-canvas"></canvas>
+  <div class="home-inner">
+    <div class="home-photo-col">
+      <div class="photo-frame">
+        <!-- To add your photo: replace this div with <img src="photo.jpg" alt="Ariana Molina"> -->
+        <img src="arianaprofile.png" alt="Ariana Molina" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+      </div>
+      <div class="home-name">Ariana Molina</div>
+      <div class="home-titles">
+        <span>MSc in Economics</span>
+        <span>UX Researcher</span>
+      </div>
+    </div>
+
+    <div class="home-text-content">
+      <div class="home-tagline typewriter" id="typewriter-tagline">Turning data into decisions.</div>
+      <div class="home-role">UX Researcher &amp; Data Analyst</div>
+      <div class="home-desc">
+        <p>With several years of experience at <strong>Academic Work, CERN, and UBS</strong>, I bring a strong analytical background.</p>
+        <p>My approach combines <strong>analytics, UX thinking, and experimentation</strong> to translate data into impactful insights.</p>
+        <p>I focus on turning complex data into simple insights, while ensuring that diverse user perspectives — including those of <strong>underrepresented and often overlooked groups</strong> — are thoughtfully considered.</p>
+      </div>
+      <div class="home-cta">
+        <a href="#" class="btn btn-purple" onclick="goTo('analytics');return false;">View projects</a>
+        <a href="https://drive.google.com/file/d/1RzJFGUnyrL5veYITiLxnNQrFTWKRz8jS/view?usp=drive_link" class="btn btn-blue" target="_blank">Download CV</a>
+        <a href="#" class="btn btn-teal" onclick="goTo('contact');return false;">Contact</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── EXPERIENCE ── -->
+<div class="page" id="page-experience">
+  <div class="experience-layout">
+    <div class="exp-sidebar">
+      <div class="exp-item active" onclick="selectExp(0,this)">
+        <div class="exp-item-year">2025</div>
+        <div class="exp-item-role">ESG Project Coordinator · ExcellGene</div>
+      </div>
+      <div class="exp-item" onclick="selectExp(1,this)">
+        <div class="exp-item-year">2024</div>
+        <div class="exp-item-role">Science Communicator · CERN</div>
+      </div>
+      <div class="exp-item" onclick="selectExp(2,this)">
+        <div class="exp-item-year">2024</div>
+        <div class="exp-item-role">Data Analyst & Researcher · CERN</div>
+      </div>
+      <div class="exp-item" onclick="selectExp(3,this)">
+        <div class="exp-item-year">2023</div>
+        <div class="exp-item-role">Data Entry Consultant · SIE SA</div>
+      </div>
+      <div class="exp-item" onclick="selectExp(4,this)">
+        <div class="exp-item-year">2022</div>
+        <div class="exp-item-role">Receptionist · Credit Suisse (UBS AG)</div>
+      </div>
+      <div class="exp-item" onclick="selectExp(5,this)">
+        <div class="exp-item-year">2021</div>
+        <div class="exp-item-role">Financial Analyst · Canton of Vaud</div>
+      </div>
+    </div>
+    <div class="exp-content" id="exp-detail"></div>
+  </div>
+</div>
+
+<!-- ── MY APPROACH ── -->
+<div class="page" id="page-approach">
+  <div class="approach-page">
+    <div class="page-heading">My Main Approach</div>
+    <div class="approach-cards">
+      <div class="approach-card purple-card">
+        <div class="approach-card-img" style="padding:0;overflow:hidden;"><img src="research.png" alt="Research" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="approach-card-body">
+          <div class="approach-card-title">Research</div>
+          <div class="approach-card-desc">Understanding behavior through data and observation. I design studies that reveal what users truly need.</div>
+        </div>
+      </div>
+      <div class="approach-card teal-card">
+        <div class="approach-card-img" style="padding:0;overflow:hidden;"><img src="analysis.png" alt="Analysis" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="approach-card-body">
+          <div class="approach-card-title">Analysis</div>
+          <div class="approach-card-desc">Transforming complex data into clear insights. I translate numbers and patterns into meaningful, actionable findings.</div>
+        </div>
+      </div>
+      <div class="approach-card cyan-card">
+        <div class="approach-card-img" style="padding:0;overflow:hidden;"><img src="impact.png" alt="Impact" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="approach-card-body">
+          <div class="approach-card-title">Impact</div>
+          <div class="approach-card-desc">Driving decisions that improve real-world outcomes. My work creates measurable change for users and organizations.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="principles-title">My Guiding Principles</div>
+    <div class="principles-grid">
+      <div class="principle-card">
+        <span class="principle-icon"><img src="diversityandinclusion.png" alt="Inclusion & Diversity"></span>
+        <h4>Inclusion &amp; Diversity</h4>
+        <p>As someone with a multicultural background, I place strong importance on building inclusive environments where diverse perspectives are valued. I aim to ensure that data-driven decisions reflect the needs of all users — including those who are often underrepresented.</p>
+      </div>
+      <div class="principle-card">
+        <span class="principle-icon"><img src="continuouslearning.png" alt="Continuous Learning"></span>
+        <h4>Continuous Learning</h4>
+        <p>I see learning as an ongoing process. In a rapidly evolving field, I actively seek to expand my knowledge — whether through new technologies, research methods, or interdisciplinary perspectives.</p>
+      </div>
+      <div class="principle-card">
+        <span class="principle-icon"><img src="curiosity.png" alt="Curiosity"></span>
+        <h4>Curiosity</h4>
+        <p>Curiosity drives my work. I constantly question assumptions, explore patterns, and look beyond the obvious to better understand behaviors and uncover meaningful insights.</p>
+      </div>
+      <div class="principle-card">
+        <span class="principle-icon"><img src="trust.png" alt="Trust & Integrity"></span>
+        <h4>Trust &amp; Integrity</h4>
+        <p>I believe that trust is essential in both data and collaboration. I strive to ensure that my analyses are transparent, reliable, and ethically grounded, while building strong and respectful relationships with stakeholders.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SELECTED WORK ── -->
+<div class="page" id="page-work">
+  <div class="work-page">
+    <div class="page-heading">Selected Work</div>
+    <div class="work-top-grid">
+      <div class="work-cat" onclick="showWork('reports',this)">
+        <img src="reports.png" alt="Reports" style="width:72px;height:72px;object-fit:contain;margin-bottom:14px;">
+        <h3>Reports</h3>
+        <p>Crafting data-driven insights from data.</p>
+        <span class="work-cat-link">View reports -&gt;</span>
+      </div>
+      <div class="work-cat" onclick="showWork('papers',this)">
+        <img src="researchpapers.png" alt="Research Papers" style="width:72px;height:72px;object-fit:contain;margin-bottom:14px;">
+        <h3>Research Papers</h3>
+        <p>A collection of research papers.</p>
+        <span class="work-cat-link blue">View papers -&gt;</span>
+      </div>
+      <div class="work-cat" onclick="showWork('design',this)">
+        <img src="UXdesign.png" alt="UX/UI Design" style="width:72px;height:72px;object-fit:contain;margin-bottom:14px;">
+        <h3>UX/UI Design Projects</h3>
+        <p>Creating user-centered digital experience.</p>
+        <span class="work-cat-link teal">View projects -&gt;</span>
+      </div>
+    </div>
+
+    <div class="work-sub" id="work-reports">
+      <h3 style="font-size:1rem;font-weight:700;margin-bottom:18px;">Reports</h3>
+      <a href="https://drive.google.com/file/d/1KbQlaSQvNeTPuH8zZ8ns8xSP9dnXKgRQ/view?usp=drive_link" target="_blank" class="report-card" style="text-decoration:none;color:inherit;display:flex;cursor:pointer;">
+        <div class="report-thumb">ExcellGene<br>Sustainability<br>Report 2025</div>
+        <div class="report-info">
+          <h4>Sustainability Report — ExcellGene 2025</h4>
+          <p>ESG environmental analysis and reporting for a Swiss biotech company.</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="work-sub" id="work-papers">
+      <h3 style="font-size:1rem;font-weight:700;margin-bottom:16px;">Research papers</h3>
+      <div class="paper-cats">
+        <span class="paper-cat active" data-category="all">All</span>
+        <span class="paper-cat" data-category="mathematics">Mathematics</span>
+        <span class="paper-cat" data-category="economics">Economics</span>
+        <span class="paper-cat" data-category="cs">Computer Science</span>
+        <span class="paper-cat" data-category="sociology">Sociology</span>
+        <span class="paper-cat" data-category="ethics">Ethics &amp; Religion</span>
+        <span class="paper-cat" data-category="politics">Politics</span>
+      </div>
+      <div class="papers-list" id="papers-all" style="margin-top:20px;">
+        <ul style="list-style:none;padding:0;">
+          <li style="margin-bottom:12px;">
+            <a href="https://zenodo.org/records/19516959" target="_blank" style="color:var(--purple);text-decoration:none;font-size:0.95rem;font-weight:500;transition:color 0.2s;">
+              Arianean Arithmetic: Peano Arithmetic over Belnap's Four-Valued Logic (2026)
+            </a>
+          </li>
+          <li style="margin-bottom:12px;">
+            <a href="https://zenodo.org/records/19600183" target="_blank" style="color:var(--purple);text-decoration:none;font-size:0.95rem;font-weight:500;transition:color 0.2s;">
+              Assessing the Relationship Between Energy-Efficient Renovations and Swiss Households Health: A Longitudinal Study from 2013 to 2023 (2025)
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="papers-list" id="papers-mathematics" style="margin-top:20px;display:none;">
+        <ul style="list-style:none;padding:0;">
+          <li style="margin-bottom:12px;">
+            <a href="https://zenodo.org/records/19516959" target="_blank" style="color:var(--purple);text-decoration:none;font-size:0.95rem;font-weight:500;transition:color 0.2s;">
+              Arianean Arithmetic: Peano Arithmetic over Belnap's Four-Valued Logic (2026)
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="papers-list" id="papers-economics" style="margin-top:20px;display:none;">
+        <ul style="list-style:none;padding:0;">
+          <li style="margin-bottom:12px;">
+            <a href="https://zenodo.org/records/19600183" target="_blank" style="color:var(--purple);text-decoration:none;font-size:0.95rem;font-weight:500;transition:color 0.2s;">
+              Assessing the Relationship Between Energy-Efficient Renovations and Swiss Households Health: A Longitudinal Study from 2013 to 2023 (2025)
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="papers-list" id="papers-cs" style="margin-top:20px;display:none;">
+      </div>
+      <div class="papers-list" id="papers-sociology" style="margin-top:20px;display:none;">
+      </div>
+      <div class="papers-list" id="papers-ethics" style="margin-top:20px;display:none;">
+      </div>
+      <div class="papers-list" id="papers-politics" style="margin-top:20px;display:none;">
+      </div>
+    </div>
+
+    <div class="work-sub" id="work-design">
+      <h3 style="font-size:1rem;font-weight:700;margin-bottom:18px;">UI / UX Design</h3>
+      <a href="https://www.figma.com/proto/l3C1N1dpYdsfjZ6MEqYUYR/KCC-App?node-id=0-1&t=dflAaLbjxuSosCEs-1" target="_blank" class="report-card" style="text-decoration:none;color:inherit;display:flex;cursor:pointer;">
+        <div class="report-thumb" style="background:linear-gradient(135deg,#1a4a9e,#2d6eb8,#4a8fd4);color:var(--white);">Crypto<br>Mobile App<br>Idea</div>
+        <div class="report-info">
+          <h4>Idea for Nexi: Crypto App</h4>
+          <p>Mobile cryptocurrency wallet design with transaction tracking and portfolio management.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ── ANALYTICS PORTFOLIO ── -->
+<div class="page" id="page-analytics">
+  <div class="analytics-container">
+    <h1 class="analytics-title">Analytics Portfolio</h1>
+
+    <div class="analytics-grid">
+      <!-- Energy Renovation Card -->
+      <div class="analytics-card" onclick="showRenovationDetail()">
+        <img src="renovationenergy.png" alt="Energy Renovation Impact" class="analytics-card-image">
+        <div class="analytics-card-overlay">
+          <h2 class="analytics-card-title">Energy Renovation Impact on Swiss Household Health</h2>
+        </div>
+      </div>
+
+      <!-- CERN Card -->
+      <div class="analytics-card" onclick="showCERNDetail()" style="cursor: pointer;">
+        <img src="particles.png" alt="CERN Science Gateway" class="analytics-card-image">
+        <div class="analytics-card-overlay">
+          <h2 class="analytics-card-title">CERN Science Gateway</h2>
+        </div>
+      </div>
+
+      <!-- ExcellGene Card -->
+      <div class="analytics-card" onclick="showExcellGeneDetail()" style="cursor: pointer;">
+        <img src="report.png" alt="ExcellGene Sustainability Report" class="analytics-card-image">
+        <div class="analytics-card-overlay">
+          <h2 class="analytics-card-title">ExcellGene's Sustainability Report 2025</h2>
+        </div>
+      </div>
+
+      <!-- Hantavirus Card -->
+      <div class="analytics-card" onclick="showHantavirusDetail()" style="cursor: pointer;">
+        <img src="hantavirus.png" alt="Hantavirus Switzerland Tracker" class="analytics-card-image">
+        <div class="analytics-card-overlay">
+          <h2 class="analytics-card-title">Hantavirus Switzerland Tracker</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ENERGY RENOVATION DETAIL PAGE ── -->
+<div class="renovation-detail" id="renovation-detail">
+  <div class="renovation-content">
+    <div class="excellgene-header">
+      <h1><span class="back-arrow" onclick="hideRenovationDetail()">←</span>The Impact of Energy Renovation on Swiss Household Health</h1>
+      <p class="subtitle">A Longitudinal Study from 2013–2023</p>
+      <div class="separator"></div>
+      <p class="meta">Master's Thesis | University of Neuchâtel | 2025</p>
+    </div>
+
+    <div class="content-section">
+      <h2 class="map-title">Evolution of Cantonal Subsidies over Time (2013–2021)</h2>
+      
+      <div style="line-height: 1.6; color: var(--mid); margin-bottom: 30px;">
+        This interactive map showcases the evolution of cantonal subsidies given by <strong>Le Programme Bâtiments</strong> over the years to different households for each canton. The data reveals significant regional variations in energy renovation support, with larger cantons like Bern, Zurich, and Vaud consistently providing higher subsidy amounts.
+      </div>
+
+      <div class="map-container">
+        <svg id="swiss-map" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+          <g id="cantons-group"></g>
+        </svg>
+        <div class="map-tooltip" id="tooltip">
+          <div class="tooltip-canton" id="tooltip-canton"></div>
+          <div class="tooltip-value" id="tooltip-value"></div>
+        </div>
+        
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-color" style="background: #E0E7FF;"></div>
+            <span>Low (< 5M CHF)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #93C5FD;"></div>
+            <span>Medium (5–15M CHF)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #3B82F6;"></div>
+            <span>High (15–30M CHF)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #1E40AF;"></div>
+            <span>Very High (> 30M CHF)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slider-container">
+        <div class="slider-top">
+          <div class="slider-label">Year:</div>
+          <div class="year-display" id="year-display">2013</div>
+          <button id="play-button" class="play-button" onclick="togglePlayAnimation()">
+            <svg id="play-icon" width="16" height="16" viewBox="0 0 24 24" fill="white">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            <svg id="pause-icon" width="16" height="16" viewBox="0 0 24 24" fill="white" style="display: none;">
+              <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+            </svg>
+          </button>
+        </div>
+        <input type="range" min="2013" max="2021" value="2013" class="year-slider" id="yearSlider">
+        <div class="year-labels">
+          <span>2013</span>
+          <span>2014</span>
+          <span>2015</span>
+          <span>2016</span>
+          <span>2017</span>
+          <span>2018</span>
+          <span>2019</span>
+          <span>2020</span>
+          <span>2021</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Cards Grid -->
+    <div class="renovation-info-grid">
+      <div class="renovation-info-card">
+        <h3>Policy Variation Across Cantons</h3>
+        <p>Subsidy levels vary significantly across Swiss cantons and over time, creating exogenous variation used as an instrumental variable.</p>
+      </div>
+
+      <div class="renovation-info-card">
+        <h3>Why It Matters</h3>
+        <p>This variation allows identification of the causal impact of renovations on health outcomes.</p>
+      </div>
+
+      <div class="renovation-info-card">
+        <h3>Key Insight</h3>
+        <p>Higher subsidy intensity is associated with increased renovation activity, which drives the estimated health improvements.</p>
+      </div>
+    </div>
+
+    <!-- Conclusion Card -->
+    <div class="renovation-conclusion-card">
+      <h3>Conclusion</h3>
+      <p>Energy-efficient renovations have a positive but modest <em>causal effect on health</em>. Using an IV-Probit model, living in a renovated dwelling increases the probability of reporting "very good" health by about +1.9 percentage points, with a statistically significant effect (p ≈ 0.06) and a strong instrument (F = 17.25).</p>
+      <p>Overall, the results suggest that housing improvements contribute to better well-being, although the magnitude of the effect remains limited.</p>
+    </div>
+
+    <!-- Thesis Link Button -->
+    <div style="text-align: center; margin: 32px 0 60px;">
+      <a href="#" class="thesis-link">Link for the full thesis</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EXCELLGENE DETAIL PAGE ══ -->
+<div class="renovation-detail" id="excellgene-detail">
+  <div class="renovation-content">
+    <div class="excellgene-header">
+      <h1><span class="back-arrow" onclick="hideExcellGeneDetail()">←</span>ExcellGene's Sustainability report 2025</h1>
+      <p class="subtitle">Calculating CO2 from scratch</p>
+      <div class="separator"></div>
+      <p class="meta">Sustainability Analysis | ExcellGene | 2025</p>
+    </div>
+
+    <!-- Visualization Cards -->
+    <div class="viz-cards">
+      <!-- Card 1: Bar Chart -->
+      <div class="viz-card">
+        <h3>Percentages of CO2 per scope</h3>
+        
+        <div class="scope-summary">
+          <div class="scope-box scope-1">
+            <h4>Scope 1</h4>
+            <p>0.3% of total<br>CO₂ Emissions</p>
+          </div>
+          <div class="scope-box scope-2">
+            <h4>Scope 2</h4>
+            <p>1.1% of total<br>CO₂ Emissions</p>
+          </div>
+          <div class="scope-box scope-3">
+            <h4>Scope 3</h4>
+            <p>98.6% of total<br>CO₂ Emissions</p>
+          </div>
+        </div>
+
+        <div class="bars-container">
+          <div class="bar-column">
+            <div class="bar-wrapper">
+              <div class="bar-fill" id="bar-1" style="height: 0%; background: var(--green-dark);">
+                <div class="bar-segment" style="flex: 99.8;">
+                  <span class="segment-label">CO2 process<br>99.8%</span>
+                </div>
+                <div class="bar-segment" style="flex: 0.2;">
+                  <span class="segment-label" style="font-size: 0.6rem;">0.2%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bar-column">
+            <div class="bar-wrapper">
+              <div class="bar-fill" id="bar-2" style="height: 0%; background: var(--green-medium);">
+                <div class="bar-segment" style="flex: 44;">
+                  <span class="segment-label">Electricity<br>44%</span>
+                </div>
+                <div class="bar-segment" style="flex: 41;">
+                  <span class="segment-label">Heating<br>41%</span>
+                </div>
+                <div class="bar-segment" style="flex: 15;">
+                  <span class="segment-label">Other<br>15%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bar-column">
+            <div class="bar-wrapper">
+              <div class="bar-fill" id="bar-3" style="height: 0%; background: var(--green-light);">
+                <div class="bar-segment" style="flex: 74;">
+                  <span class="segment-label">Purchased<br>Goods<br>74%</span>
+                </div>
+                <div class="bar-segment" style="flex: 10;">
+                  <span class="segment-label">Services<br>10%</span>
+                </div>
+                <div class="bar-segment" style="flex: 7;">
+                  <span class="segment-label">Travel<br>7%</span>
+                </div>
+                <div class="bar-segment" style="flex: 7;">
+                  <span class="segment-label">Commute<br>7%</span>
+                </div>
+                <div class="bar-segment" style="flex: 2;">
+                  <span class="segment-label" style="font-size: 0.6rem;">2%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Bubble Chart -->
+      <div class="viz-card">
+        <h3>Scopes 1-2-3 Interactive map</h3>
+        
+        <div class="scope-buttons">
+          <button class="scope-btn" data-scope="1">Scope 1</button>
+          <button class="scope-btn" data-scope="2">Scope 2</button>
+          <button class="scope-btn active" data-scope="3">Scope 3</button>
+        </div>
+
+        <svg id="bubble-chart"></svg>
+      </div>
+    </div>
+
+    <!-- Content Sections -->
+    <div class="excellgene-content">
+      <h2>How to calculate the CO2 of a company?</h2>
+      <p>A company's carbon footprint is calculated by measuring all greenhouse gas (GHG) emissions generated by its activities. These emissions are usually expressed in CO₂ equivalent (CO₂e). The international standard most companies follow is the GHG Protocol, which divides emissions into three categories called Scopes 1, 2, and 3.</p>
+    </div>
+
+    <div class="excellgene-content">
+      <h2>What are Scopes 1, 2, and 3?</h2>
+      <p>Scopes 1, 2, and 3 classify a company's greenhouse gas emissions according to the GHG Protocol.</p>
+      
+      <div class="scope-definitions">
+        <div class="scope-definition scope-1">
+          <h3>Scope 1</h3>
+          <p>Direct emissions from sources owned or controlled</p>
+        </div>
+        <div class="scope-definition scope-2">
+          <h3>Scope 2</h3>
+          <p>Indirect emissions from purchased electricity and energy</p>
+        </div>
+        <div class="scope-definition scope-3">
+          <h3>Scope 3</h3>
+          <p>All of the other indirect emissions</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="excellgene-content">
+      <h2>How to start calculating then?</h2>
+      <p>First, we need to conduct preliminary research to categorize the different scopes using a visual delimitation chart. This requires understanding all company activities, the full A-to-Z lifecycle of the products, and the entire waste management process. You can start with a chart like this one:</p>
+      <img src="delimitation.png" alt="Emissions Categorization by Scope" class="delimitation-image">
+    </div>
+
+    <div class="excellgene-content">
+      <h2>How to retrieve the data?</h2>
+      <p>Once the delimitation chart is completed, the next step is collecting data across all departments. This is often the most challenging phase, as emissions can either be estimated or calculated precisely in kilograms or a monetary unit for a specific item or activity. During this stage, a commuting questionnaire for employees is also essential to assess transportation-related emissions.</p>
+      <p>To convert the collected data into "CO₂ equivalent" (CO₂e), we use what are called emission factors, which act as conversion factors between an activity and its associated emissions. These emission factors can be obtained from databases such as Climatiq.io, ecoinvent, ADEME, or EXIOBASE.</p>
+    </div>
+
+    <div class="excellgene-content">
+      <h2>What steps to take in the future in order to reduce the CO2 of a given company?</h2>
+      <p>Once a company has calculated its CO₂ emissions for each department, the next step is to establish clear reduction targets using appropriate KPIs. This stage is essential, as it transforms carbon data into actionable strategies and measurable environmental impact.</p>
+    </div>
+
+    <div class="report-link-wrapper">
+      <a href="https://excellgene.com/storage/pdfs/ExcellGene_2025_ESG_Report.pdf" class="report-link" target="_blank">Link for the full report</a>
+    </div>
+  </div>
+
+  <button class="scroll-top-excellgene" onclick="scrollToTopExcellGene()">
+    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- CERN DETAIL PAGE -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<div class="renovation-detail" id="cern-detail">
+  <div class="renovation-content">
+    <!-- Header -->
+    <div class="excellgene-header">
+      <h1><span class="back-arrow" onclick="hideCERNDetail()">←</span>Science Gateway Visitor Experience Analysis</h1>
+      <p class="subtitle">A UX Research Study to Better Understand Visitor Needs</p>
+      <div class="separator"></div>
+      <p class="meta">Science Gateway Research project | CERN | 2024</p>
+    </div>
+
+    <!-- Visualization Cards -->
+    <div class="cern-viz-grid">
+      <!-- Card 1: Visitor Experience Analysis -->
+      <div class="cern-viz-card">
+        <h2>CERN Science Gateway Visitor Experience Analysis</h2>
+        
+        <div class="cern-exhibition-buttons">
+          <button class="cern-exhibition-btn cern-all-btn active" data-exhibition="all" data-chart="experience">All</button>
+          <button class="cern-exhibition-btn cern-purple" data-exhibition="discover" data-chart="experience">Discover CERN</button>
+          <button class="cern-exhibition-btn cern-blue" data-exhibition="universe" data-chart="experience">Our Universe</button>
+          <button class="cern-exhibition-btn cern-green" data-exhibition="quantum" data-chart="experience">Quantum World</button>
+        </div>
+
+        <div class="cern-spider-chart-container" id="cern-experience-chart"></div>
+      </div>
+
+      <!-- Card 2: Sentiment Analysis -->
+      <div class="cern-viz-card">
+        <h2>Sentiment analysis of the visitors</h2>
+        
+        <div class="cern-exhibition-buttons">
+          <button class="cern-exhibition-btn cern-all-btn active" data-exhibition="all" data-chart="sentiment">All</button>
+          <button class="cern-exhibition-btn cern-purple" data-exhibition="discover" data-chart="sentiment">Discover CERN</button>
+          <button class="cern-exhibition-btn cern-blue" data-exhibition="universe" data-chart="sentiment">Our Universe</button>
+          <button class="cern-exhibition-btn cern-green" data-exhibition="quantum" data-chart="sentiment">Quantum World</button>
+        </div>
+
+        <div class="cern-spider-chart-container" id="cern-sentiment-chart"></div>
+      </div>
+    </div>
+
+    <!-- Content Section: My Work at CERN -->
+    <div class="excellgene-content">
+      <h2>My work at CERN</h2>
+      <p>During my summer 2024 internship at CERN, I conducted a comprehensive visitor experience study at the newly opened Science Gateway. Working with a team of researchers, I analyzed survey responses from over 1,000 visitors across four exhibition spaces to understand how different audiences engage with particle physics concepts.</p>
+      
+      <div class="cern-exhibition-photos">
+        <div class="cern-exhibition-photo">
+          <img src="photo1.png" alt="Discover CERN Exhibition">
+          <p>Discover CERN</p>
+        </div>
+        <div class="cern-exhibition-photo">
+          <img src="photo2.png" alt="Our Universe Exhibition">
+          <p>Our Universe</p>
+        </div>
+        <div class="cern-exhibition-photo">
+          <img src="photo3.png" alt="Quantum World Exhibition">
+          <p>Quantum World</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Section: Creating the database -->
+    <div class="excellgene-content">
+      <h2>Creating the database</h2>
+      <p>We created the visitor experience questionnaire by using LimeSurvey, and we did person to person questionnaires (qualitative approach) and made fill a more quantitative form to the different participants (quantitative approach). To encourage participation we gave them a secret present. When we had enough data (more than 1'000 participants) we downloaded the data (.csv doc).</p>
+      
+      <div class="cern-exhibition-photos" style="grid-template-columns: 1fr 1fr;">
+        <div class="cern-exhibition-photo">
+          <img src="explaining.png" alt="Interviewing visitors">
+          <p>Interviewing people was the first step</p>
+        </div>
+        <div class="cern-exhibition-photo">
+          <img src="sticker.png" alt="CERN stickers as incentive">
+          <p>The secret present to encourage visitors to participate were stickers from CERN</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Section: Cleaning and analyzing -->
+    <div class="excellgene-content">
+      <h2>Cleaning and analyzing the data</h2>
+      <p>Then we used R to clean the data and to do the statistical analysis and D3.js for interactive visualization, the team were I worked in mapped the visitor sentiment patterns and identified which exhibition designs resonated most effectively with diverse age groups and educational backgrounds. The research revealed significant variations in emotional engagement across spaces, with implications for future science communication strategies.</p>
+    </div>
+
+    <!-- Content Section: Findings -->
+    <div class="excellgene-content">
+      <h2>Findings</h2>
+      <p>Key findings included higher confusion levels in quantum physics exhibitions among non-STEM visitors, and surprisingly strong fascination responses in cosmology-themed spaces across all demographics. These insights directly informed CERN's visitor guide training programs and exhibition optimization efforts. We discovered that women particularly were more likely to be more interested in science after visiting certain spaces with explanatory videos of science when other women were explaining scientific concepts.</p>
+      <p>Other key findings included higher confusion levels in quantum physics exhibitions among non-STEM visitors, and surprisingly strong fascination responses in cosmology-themed spaces across all demographics. These insights directly informed CERN's visitor guide training programs and exhibition optimization efforts.</p>
+    </div>
+  </div>
+
+  <button class="scroll-top-excellgene" onclick="scrollToTopCERN()">
+    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- HANTAVIRUS DETAIL PAGE -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<div class="renovation-detail" id="hantavirus-detail">
+  <div class="renovation-content">
+    <!-- HANTAVIRUS DETAIL PAGE -->
+    <div class="exp-sidebar-detail">
+      <button class="back-arrow" onclick="hideHantavirusDetail()">&lt;</button>
+      <div class="exp-company">
+        <h1>Hantavirus Tracker Switzerland</h1>
+        <p class="exp-role">Real life visualization of the cases</p>
+      </div>
+      <div class="exp-divider"></div>
+      <p class="exp-meta">Personal Project | <a href="https://arianamolina.github.io/hantavirus/" target="_blank">arianamolina.github.io/hantavirus</a> | 2026</p>
+      <a href="https://arianamolina.github.io/hantavirus/" target="_blank" class="btn btn-launch">Launch Tracker</a>
+    </div>
+    <div class="exp-details-analytics">
+      <div class="hanta-intro-grid">
+        <div class="hanta-intro-text">
+          <section class="exp-section">
+            <h2>Project Overview</h2>
+            <p>The Hantavirus Tracker combines epidemiological modeling with interactive visualization to demonstrate how a novel pathogen would disseminate across Switzerland's 26 cantons. Using confirmed case data from Google Sheets, the simulator calculates infection projections based on:</p>
+            <ul><li><strong>Reproduction Rate (R₀):</strong> Adjustable from 0.1 to 10.0</li><li><strong>Incubation Period:</strong> Customizable (1-60 days; default 17 days for Andes virus)</li><li><strong>Time Horizon:</strong> 1 week to 2 months simulation windows</li><li><strong>Geographic Spread:</strong> Local transmission + commuter-based inter-canton propagation</li></ul>
+          </section>
+        </div>
+        <div class="hanta-intro-image">
+          <img src="./projects/hanta.png" alt="Hantavirus Tracker">
+        </div>
+      </div>
+      <section class="exp-section">
+        <h2>Scientific Foundation</h2>
+        <p>The simulator is calibrated to Andes virus, the only human-to-human transmissible hantavirus strain. Based on peer-reviewed research:</p>
+        <ul><li><strong>Incubation Period:</strong> 7-39 days (median 18 days)</li><li><strong>Contagiousness Profile:</strong><ul><li>Days 0-15: Asymptomatic, non-contagious</li><li>Days 16-17: Pre-symptomatic, 20% transmission (1-2 days before symptom onset)</li><li>Days 18+: Symptomatic, 100% contagious</li></ul></li><li><strong>Transmission:</strong> Person-to-person via prolonged close contact</li><li><strong>Fatality Rate:</strong> ~38% (historically high)</li></ul>
+      </section>
+      <section class="exp-section">
+        <h2>Realistic Transmission Dynamics</h2>
+        <p>The simulator models transmission across three temporal phases. During week 1, when infection is asymptomatic and undetected, transmission splits 70% local and 30% via commuter routes as people continue normal activity.</p>
+        <p>Weeks 2-3 shift to 60% local, 40% commuter—still asymptomatic but increasingly infectious. By week 4, symptoms emerge and isolation begins: 90% local, 10% commuter.</p>
+        <p>Urban density directly affects R₀—Zürich (4,700/km²) and Geneva (12,000/km²) show higher transmission rates than rural cantons. Maximum infections are capped at 10% of canton population (healthcare capacity limit). Inter-canton spread follows Switzerland's major train routes: Zürich-Bern (15,000 daily), Bern-Lausanne (8,000 daily), Lausanne-Geneva (25,000 daily).</p>
+      </section>
+      <section class="exp-section">
+        <h2>Data Sources & References</h2>
+        <ul><li><strong>OFSP</strong> (Federal Office of Public Health - Switzerland): Case reporting standards</li><li><strong>WHO</strong> (World Health Organization): Hantavirus epidemiological bulletins</li><li><strong>NCBI/PubMed:</strong> Peer-reviewed Andes virus transmission studies</li><li><strong>Swiss Federal Statistical Office:</strong> Canton population & density data</li><li><strong>OpenStreetMap/Nominatim:</strong> Geocoding & geographic data</li><li><strong>Google Sheets API:</strong> Real-time case data management</li></ul>
+      </section>
+      <section class="exp-section">
+        <h2>Limitations & Assumptions</h2>
+        <p>The model employs several simplifications for tractability. The transmission framework does not stratify by age, account for healthcare interventions, or model behavioral adaptation beyond isolation—all of which influence real epidemics. Contact patterns within cantons are assumed homogeneous, though density varies significantly. Commuter flows are static; actual train traffic fluctuates by season, day, and time. Seasonal effects (winter heating, mobility changes) are not modeled. Geographic routing is simplified to major urban centers, omitting secondary transmission corridors.</p>
+      </section>
+      <section class="exp-section">
+        <h2>Future Enhancements</h2>
+        <p>Planned developments include multi-scenario comparison tools for testing alternative parameter sets, intervention modeling (vaccination, quarantine, travel restrictions), and age-stratified transmission dynamics.</p>
+        <p>Integration with real-time OFSP case data via live API would replace manual CSV uploads. Multi-language support (French, Italian) and export functionality (PDF/CSV reports) would improve accessibility. Advanced features include spatial correlation analysis mapping canton-to-canton transmission matrices and network-level intervention assessment.</p>
+      </section>
+      <section class="exp-section">
+        <h2>References</h2>
+        <ul class="ref-list">
+          <li>Gonzalez Della Valle, M., Edelstein, A., Miguel, S., Martinez, V., Cortez, J., Cacace, M.L., Jurgelenas, G., Sosa Estani, S., & Padula, P. (2002). "Andes virus associated with hantavirus pulmonary syndrome in northern Argentina and determination of the precise site of infection." <em>American Journal of Tropical Medicine and Hygiene</em>, 66(6), 713-720. <a href="https://doi.org/10.4269/ajtmh.2002.66.713" target="_blank">https://doi.org/10.4269/ajtmh.2002.66.713</a></li>
+          <li>ECDC (European Centre for Disease Prevention and Control). "Hantavirus-associated cluster illness on cruise ship." ECDC Assessment and epidemiological update. <a href="https://www.ecdc.europa.eu/en/publications-data/hantavirus-associated-cluster-illness-cruise-ship-ecdc-assessment-and" target="_blank">https://www.ecdc.europa.eu/en/publications-data/hantavirus-associated-cluster-illness-cruise-ship-ecdc-assessment-and</a></li>
+          <li>OFSP (Swiss Federal Office of Public Health). Hantavirus information and epidemiological data. <a href="https://www.bag.admin.ch/en/newnsb/p--A7yPSfxdBqR0N9kZMC" target="_blank">https://www.bag.admin.ch/en/newnsb/p--A7yPSfxdBqR0N9kZMC</a></li>
+          <li>WHO (World Health Organization). "Disease Outbreak News - Hantavirus." <a href="https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON600" target="_blank">https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON600</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+<style>
+.hanta-intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; margin-bottom: 48px; }
+.hanta-intro-text { }
+.hanta-intro-image { border-radius: 8px; overflow: hidden; }
+.hanta-intro-image img { width: 100%; height: auto; display: block; }
+.exp-sidebar-detail { border-right: 1px solid var(--border); padding: 40px 32px; overflow-y: auto; max-width: 300px; }
+.exp-sidebar-detail h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 4px; color: var(--dark); }
+.exp-role { font-size: 0.9rem; color: var(--mid); margin-bottom: 20px; }
+.exp-divider { height: 3px; background: var(--purple); width: 50px; margin: 20px 0; border-radius: 2px; }
+.exp-meta { font-size: 0.75rem; color: var(--mid); margin-bottom: 24px; line-height: 1.6; }
+.exp-meta a { color: var(--purple); text-decoration: none; font-weight: 500; }
+.exp-meta a:hover { color: var(--dark); text-decoration: underline; }
+
+.btn-launch { display: block; width: 100%; background: var(--dark); color: white; margin-top: 20px; text-align: center; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; text-decoration: none; }
+.btn-launch:hover { background: var(--purple); }
+.exp-details-analytics { padding: 40px 48px; overflow-y: auto; flex: 1; }
+.exp-section { margin-bottom: 40px; }
+.exp-section h2 { font-size: 1.15rem; font-weight: 600; color: var(--dark); margin-bottom: 12px; }
+.exp-section p { font-size: 0.9rem; color: var(--mid); line-height: 1.7; margin-bottom: 12px; }
+.exp-section ul { margin-left: 18px; margin-bottom: 12px; }
+.exp-section li { font-size: 0.9rem; color: var(--mid); line-height: 1.6; margin-bottom: 8px; list-style: disc; }
+.exp-section strong { color: var(--dark); font-weight: 600; }
+.exp-section a { color: var(--purple); text-decoration: none; }
+.exp-section a:hover { text-decoration: underline; }
+.ref-list { margin-left: 0 !important; list-style: none !important; }
+.ref-list li { list-style: none !important; margin-bottom: 16px !important; padding-left: 20px; text-indent: -20px; }
+</style>
+
+  <button class="scroll-top-excellgene" onclick="scrollToTopHantavirus()">
+    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </button>
+</div>
+
+<div id="bubble-tooltip" style="position: absolute; opacity: 0; background: rgba(0,0,0,0.9); color: white; padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; pointer-events: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: opacity 0.2s;"></div>
+
+<!-- ── ABOUT ── -->
+<!-- ── ABOUT ── -->
+<div class="page" id="page-about">
+  <div class="about-inner">
+    <div>
+      <h2 class="about-me-title">About me</h2>
+      <div class="about-photo">
+        <img src="aboutme.jpg" alt="Ariana Molina" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+      </div>
+      <p class="about-caption">Some elements representing different aspects of my personality.</p>
+    </div>
+    <div class="about-text">
+      <p>I'm <strong>Ariana Molina</strong>, a UX Researcher and Data Analyst with a multicultural background — born in Ecuador, and with 3 different nationalities, I have lived and worked across 5 different countries, which has given me a unique ability to understand diverse perspectives and adapt quickly to new environments.</p>
+      <p>My academic journey led me to a <strong>Master's degree in Applied Economics</strong> at the University of Neuchâtel, where I developed a strong foundation in statistical modeling, data analysis and behavioral economics.</p>
+      <p>As a neurodivergent person, I experience the world with an intensity and curiosity that I consider one of my greatest strengths. I'm naturally wired to seek novelty, make unexpected connections between ideas, and dive deep into complex problems until I find meaningful answers. This is not a limitation — it's the engine behind my creativity, my drive to keep learning, and my ability to bring alternative perspectives to every project I work on.</p>
+      <p>I deeply value <strong>inclusion and equal representation</strong> — not just as professional values, but as lived experience. When I'm not analyzing data or designing research studies, you'll find me playing chess, exploring via ferratas, or cooking dishes from everywhere around the world just for fun.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONTACT ── -->
+<div class="page" id="page-contact">
+  <div class="contact-city-bg"></div>
+  <div class="contact-inner">
+    <div style="max-width:480px;width:100%;">
+      <h2>Contact</h2>
+      <div class="contact-items">
+
+        <div class="contact-item">
+          <div class="contact-ico">
+            <img src="email.png" alt="Email">
+          </div>
+          <a href="mailto:ariana.molina.c@outlook.com">
+            ariana.molina.c@outlook.com
+          </a>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-ico">
+            <img src="linkedin.png" alt="LinkedIn">
+          </div>
+          <a href="https://www.linkedin.com/in/ariana-m-c-278146181/" target="_blank">
+            linkedin.com/in/ariana-m-c-278146181
+          </a>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-ico">
+            <img src="location.png" alt="Location">
+          </div>
+          <span>
+            Based in Lausanne, Switzerland — open to opportunities in Geneva, Zurich and remote.
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const pages = ['home','experience','approach','work','analytics','about','contact'];
+const labels = { home:'Home', experience:'Experience', approach:'My Approach', work:'Selected Work', analytics:'Analytics Portfolio', about:'About', contact:'Contact' };
+let current = 'home';
+
+function goTo(page) {
+  // Close any open detail pages first
+  const renovationDetail = document.getElementById('renovation-detail');
+  const excellgeneDetail = document.getElementById('excellgene-detail');
+  const cernDetail = document.getElementById('cern-detail');
+  const hantavirusDetail = document.getElementById('hantavirus-detail');
+  
+  if (renovationDetail && renovationDetail.classList.contains('active')) {
+    hideRenovationDetail();
+  }
+  if (excellgeneDetail && excellgeneDetail.classList.contains('active')) {
+    hideExcellGeneDetail();
+  }
+  if (cernDetail && cernDetail.classList.contains('active')) {
+    hideCERNDetail();
+  }
+  if (hantavirusDetail && hantavirusDetail.classList.contains('active')) {
+    hideHantavirusDetail();
+  }
+  
+  // Then navigate
+  if (page === current) return;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  current = page;
+  updateNavActive();
+  if (page === 'experience') selectExp(0, document.querySelector('.exp-item'));
+  if (page === 'home') restartTypewriter();
+}
+
+function updateNavActive() {
+  pages.forEach(p => {
+    const el = document.getElementById('nav-' + p);
+    if (el) el.classList.toggle('nav-active', p === current);
+  });
+}
+
+function restartTypewriter() {
+  const el = document.getElementById('typewriter-tagline');
+  el.classList.remove('typewriter');
+  void el.offsetWidth; // force reflow
+  el.classList.add('typewriter');
+}
+
+// Experience
+const expData = [
+  { img:'excellgene.png', bg:'linear-gradient(135deg,#0d2b0d,#1a4a1a,#2d6e2d)', title:'ESG Project Coordinator', org:'ExcellGene SA · 2025', desc:'Led sustainability reporting and ESG initiatives for a Swiss biotech company. Produced the ExcellGene Sustainability Report 2025, covering environmental, social, and governance dimensions.', tags:[{l:'Biotech',c:'tag-teal'},{l:'Sustainability',c:'tag-teal'},{l:'CO2 Calculation',c:'tag-purple'},{l:'KPI Creation',c:'tag-purple'},{l:'Risk Management',c:'tag-purple'},{l:'Data Analysis',c:'tag-purple'}] },
+  { img:'cernsciencecommunication.png', bg:'linear-gradient(135deg,#0a0a1a,#1a1040,#2d1b69)', title:'Science Communicator', org:'CERN · 2024', desc:'Communicated complex scientific concepts to diverse audiences at one of the world\'s leading physics research centers. Designed and delivered engaging content bridging science and the general public.', tags:[{l:'Scientific Communication',c:'tag-teal'},{l:'Science Gateway',c:'tag-teal'},{l:'Communication',c:'tag-purple'},{l:'Public Outreach',c:'tag-purple'}] },
+  { img:'cerndataanalyst.png', bg:'linear-gradient(135deg,#0a0a1a,#1a1040,#2d1b69)', title:'Data Analyst & Researcher', org:'CERN · Internship 2024', desc:'Conducted behavioral data analysis and UX research in scientific environments. Analyzed visitor interaction patterns and designed user experiments to improve engagement.', tags:[{l:'Particle Physics Research',c:'tag-teal'},{l:'Department of Exhibitions',c:'tag-teal'},{l:'R',c:'tag-purple'},{l:'Data Analysis',c:'tag-purple'},{l:'Excel',c:'tag-purple'},{l:'UX Research',c:'tag-purple'},{l:'Python',c:'tag-purple'}] },
+  { img:'siesa.png', bg:'linear-gradient(135deg,#1a1a2e,#2d2d50,#1a3a6a)', title:'Data Entry Consultant', org:'SIE SA · 2023', desc:'Provided data management and entry consulting services, ensuring data accuracy, consistency, and reliability across organizational systems.', tags:[{l:'Energy',c:'tag-teal'},{l:'Excel',c:'tag-purple'},{l:'SAP',c:'tag-purple'},{l:'Web Site Management',c:'tag-purple'},{l:'Power BI',c:'tag-purple'}] },
+  { img:'creditsuisse.png', bg:'linear-gradient(135deg,#0a1628,#1a2d4a,#2d4a6e)', title:'Receptionist', org:'Credit Suisse (UBS AG) · 2022', desc:"Provided front-desk services at one of Switzerland's leading financial institutions, developing strong interpersonal and organizational skills in a high-standard corporate environment.", tags:[{l:'Banking',c:'tag-teal'},{l:'Client Relations',c:'tag-purple'},{l:'Excel',c:'tag-purple'},{l:'CDB20',c:'tag-purple'}] },
+  { img:'cantonvaud.png', bg:'linear-gradient(135deg,#1a0a0a,#3a1a1a,#5a2020)', title:'File Manager', org:'Canton of Vaud · 2021', desc:'Performed financial analysis and data entry tasks for the Canton of Vaud, contributing to public sector financial reporting and budget monitoring.', tags:[{l:'Public Sector',c:'tag-teal'},{l:'Jira',c:'tag-purple'},{l:'Financial Analysis',c:'tag-purple'},{l:'Stakeholder Relations',c:'tag-purple'},{l:'Excel',c:'tag-purple'}] },
+];
+
+function selectExp(idx, el) {
+  document.querySelectorAll('.exp-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  const d = expData[idx];
+
+  const extra = d.extra 
+    ? `<ul style="margin:8px 0 0 16px;">
+        ${d.extra.map(e=>`<li style="font-size:0.76rem;color:var(--mid);line-height:1.8;">${e}</li>`).join('')}
+       </ul>` 
+    : '';
+
+  document.getElementById('exp-detail').innerHTML = `
+    <div class="exp-card">
+      <div class="exp-card-visual" style="background:${d.bg};">
+        ${d.img 
+          ? `<img src="${d.img}" alt="${d.title}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">`
+          : `<span style="position:relative;z-index:1;font-size:2.8rem;">${d.icon}</span>`
+        }
+      </div>
+
+      <div class="exp-card-body">
+        <h3>${d.title}</h3>
+        <div class="exp-card-subtitle">${d.org}</div>
+        <div class="exp-card-desc">${d.desc}${extra}</div>
+        <div class="exp-tags">
+          ${d.tags.map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+function showWork(type, el) {
+  document.querySelectorAll('.work-cat').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.work-sub').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('work-' + type).classList.add('active');
+}
+
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('paper-cat')) {
+    document.querySelectorAll('.paper-cat').forEach(t => t.classList.remove('active'));
+    e.target.classList.add('active');
+    
+    // Get selected category
+    const category = e.target.getAttribute('data-category');
+    
+    // If "All" is selected, show all papers
+    if (category === 'all') {
+      document.querySelectorAll('.papers-list').forEach(p => p.style.display = 'block');
+    } else {
+      // Hide all paper lists
+      document.querySelectorAll('.papers-list').forEach(p => p.style.display = 'none');
+      
+      // Show the selected category's papers
+      const papersList = document.getElementById('papers-' + category);
+      if (papersList) papersList.style.display = 'block';
+    }
+  }
+});
+
+// Init
+updateNavActive();
+selectExp(0, document.querySelector('.exp-item'));
+
+// Particle animation for home page with network connections
+class ParticleAnimation {
+  constructor() {
+    this.canvas = document.getElementById('particles-canvas');
+    if (!this.canvas) return;
+    
+    this.ctx = this.canvas.getContext('2d');
+    this.particles = [];
+    this.particleCount = 80;
+    this.maxDistance = 150;
+    this.resize();
+    this.init();
+    this.animate();
+    
+    window.addEventListener('resize', () => this.resize());
+  }
+  
+  resize() {
+    this.canvas.width = this.canvas.offsetWidth;
+    this.canvas.height = this.canvas.offsetHeight;
+  }
+  
+  init() {
+    this.particles = [];
+    for (let i = 0; i < this.particleCount; i++) {
+      this.particles.push({
+        x: Math.random() * this.canvas.width,
+        y: Math.random() * this.canvas.height,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        radius: Math.random() * 1.5 + 1
+      });
+    }
+  }
+  
+  drawLines() {
+    for (let i = 0; i < this.particles.length; i++) {
+      for (let j = i + 1; j < this.particles.length; j++) {
+        const dx = this.particles[i].x - this.particles[j].x;
+        const dy = this.particles[i].y - this.particles[j].y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < this.maxDistance) {
+          const opacity = (1 - distance / this.maxDistance) * 0.35;
+          this.ctx.beginPath();
+          this.ctx.strokeStyle = `rgba(107, 63, 245, ${opacity})`;
+          this.ctx.lineWidth = 1;
+          this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
+          this.ctx.lineTo(this.particles[j].x, this.particles[j].y);
+          this.ctx.stroke();
+        }
+      }
+    }
+  }
+  
+  animate() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    
+    // Draw connecting lines
+    this.drawLines();
+    
+    // Draw and update particles
+    this.particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      
+      if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
+      
+      this.ctx.beginPath();
+      this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      this.ctx.fillStyle = 'rgba(107, 63, 245, 0.5)';
+      this.ctx.fill();
+    });
+    
+    requestAnimationFrame(() => this.animate());
+  }
+}
+
+// Only start animation when on home page
+if (document.getElementById('particles-canvas')) {
+  new ParticleAnimation();
+}
+
+// ═══ ANALYTICS PORTFOLIO & SWISS MAP ═══
+function showRenovationDetail() {
+  document.getElementById('renovation-detail').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  // Initialize map after detail page is shown
+ requestAnimationFrame(() => initializeSwissMap());
+}
+
+// Global variable for map paths
+let cantonPaths;
+
+async function initializeSwissMap() {
+  console.log('Loading Swiss canton data...');
+  
+  try {
+    // Load the TopoJSON file
+    const response = await fetch('ch-cantons.json');
+    const topoData = await response.json();
+    
+    // Convert TopoJSON to GeoJSON
+    const cantons = topojson.feature(topoData, topoData.objects.cantons);
+    
+    console.log('Map data loaded successfully');
+    
+    const mapContainer = document.querySelector('.map-container');
+    const width = mapContainer.offsetWidth || 800;
+    const height = 500;
+
+    const svg = d3.select('#swiss-map')
+      .attr('viewBox', `0 0 ${width} ${height}`)
+      .attr('width', width)
+      .attr('height', height);
+
+    // Clear any existing content
+    svg.selectAll('*').remove();
+
+    const tooltip = d3.select('#tooltip');
+    
+    const projection = d3.geoMercator()
+      .fitSize([width, height], cantons);
+    
+    const path = d3.geoPath().projection(projection);
+    
+    cantonPaths = svg.selectAll('path')
+      .data(cantons.features)
+      .enter()
+      .append('path')
+      .attr('d', path)
+      .attr('class', 'canton-path')
+      .style('stroke', '#fff')
+      .style('stroke-width', '1.5px')
+      .style('cursor', 'pointer')
+      .on('mouseover', function(event, d) {
+        // Convert numeric ID to canton code
+        const numericId = d.properties.id;
+        const cantonCode = numericIdToCode[numericId];
+        const cantonName = cantonNames[cantonCode] || d.properties.name;
+        const currentYear = document.getElementById('yearSlider').value;
+        const amount = subsidyData[currentYear][cantonCode];
+        
+        if (amount !== undefined) {
+          d3.select('#tooltip-canton').text(cantonName);
+          d3.select('#tooltip-value').text(`Subsidy: ${amount.toFixed(2)}M CHF`);
+          tooltip.style('opacity', '1');
+        }
+        
+        d3.select(this).style('stroke-width', '2.5px').style('filter', 'brightness(0.9)');
+      })
+      .on('mousemove', function(event) {
+        const rect = mapContainer.getBoundingClientRect();
+        tooltip
+          .style('left', (event.clientX - rect.left + 10) + 'px')
+          .style('top', (event.clientY - rect.top + 10) + 'px');
+      })
+      .on('mouseout', function() {
+        tooltip.style('opacity', '0');
+        d3.select(this).style('stroke-width', '1.5px').style('filter', 'none');
+      });
+    
+    // Initial render
+    updateSwissMap(2013);
+    console.log('Map initialized successfully');
+    
+    // Set up slider event listener after map is ready
+    const slider = document.getElementById('yearSlider');
+    if (slider) {
+      slider.addEventListener('input', function(e) {
+        const year = e.target.value;
+        console.log('Slider moved to year:', year);
+        updateSwissMap(year);
+      });
+      console.log('Slider listener attached');
+    } else {
+      console.error('Slider element not found!');
+    }
+    
+  } catch (error) {
+    console.error('Error loading map:', error);
+    alert('Error loading Swiss canton map. Please make sure ch-cantons.json is in the same folder.');
+  }
+}
+
+function updateSwissMap(year) {
+  console.log('updateSwissMap called with year:', year);
+  
+  if (!cantonPaths) {
+    console.error('Canton paths not initialized');
+    return;
+  }
+  
+  if (!subsidyData[year]) {
+    console.error('No data for year:', year);
+    return;
+  }
+  
+  console.log('Updating map for year:', year);
+  
+  cantonPaths
+    .transition()
+    .duration(300)
+    .attr('fill', d => {
+      // Convert numeric ID to canton code
+      const numericId = d.properties.id;
+      const cantonCode = numericIdToCode[numericId];
+      const amount = subsidyData[year][cantonCode];
+      
+      return amount !== undefined ? getColor(amount) : '#f0f0f0';
+    });
+  
+  document.getElementById('year-display').textContent = year;
+  console.log('Year display updated to:', year);
+}
+
+function hideRenovationDetail() {
+  document.getElementById('renovation-detail').classList.remove('active');
+  document.body.style.overflow = '';
+  
+  // Stop animation if playing
+  if (window.yearAnimationInterval) {
+    clearInterval(window.yearAnimationInterval);
+    window.yearAnimationInterval = null;
+  }
+  
+  // Reset slider and map to 2013
+  const slider = document.getElementById('yearSlider');
+  if (slider) {
+    slider.value = 2013;
+    updateSwissMap(2013);
+  }
+  
+  // Reset play button icon
+  const playIcon = document.getElementById('play-icon');
+  const pauseIcon = document.getElementById('pause-icon');
+  if (playIcon && pauseIcon) {
+    playIcon.style.display = 'block';
+    pauseIcon.style.display = 'none';
+  }
+}
+
+// Play/Pause animation through years
+function togglePlayAnimation() {
+  const playIcon = document.getElementById('play-icon');
+  const pauseIcon = document.getElementById('pause-icon');
+  const slider = document.getElementById('yearSlider');
+  
+  // If already playing, stop it
+  if (window.yearAnimationInterval) {
+    clearInterval(window.yearAnimationInterval);
+    window.yearAnimationInterval = null;
+    playIcon.style.display = 'block';
+    pauseIcon.style.display = 'none';
+    return;
+  }
+  
+  // Start playing
+  playIcon.style.display = 'none';
+  pauseIcon.style.display = 'block';
+  
+  let currentYear = parseInt(slider.value);
+  
+  window.yearAnimationInterval = setInterval(() => {
+    currentYear++;
+    
+    if (currentYear > 2021) {
+      // Stop at the end
+      clearInterval(window.yearAnimationInterval);
+      window.yearAnimationInterval = null;
+      playIcon.style.display = 'block';
+      pauseIcon.style.display = 'none';
+      return;
+    }
+    
+    slider.value = currentYear;
+    updateSwissMap(currentYear);
+  }, 400); // 400ms between years (about 3.5 seconds total for 2013-2021)
+}
+
+// Swiss Map Data
+const subsidyData = {
+  2013: {"AG": 9.09, "AI": 0.29, "AR": 1.13, "BE": 19.23, "BS": 3.19, "BL": 5.35, "FR": 3.99, "GE": 4.35, "GL": 0.69, "GR": 4.86, "JU": 1.47, "LU": 6.94, "NE": 2.19, "NW": 0.72, "OW": 0.69, "SG": 11.33, "SH": 1.35, "SO": 4.82, "SZ": 2.35, "TG": 4.75, "TI": 4.86, "UR": 0.57, "VD": 8.13, "VS": 5.56, "ZG": 2.18, "ZH": 20.61},
+  2014: {"AG": 11.15, "AI": 0.33, "AR": 1.65, "BE": 21.85, "BS": 3.6, "BL": 5.83, "FR": 4.28, "GE": 5.08, "GL": 0.67, "GR": 5.45, "JU": 2.08, "LU": 6.69, "NE": 5.39, "NW": 0.72, "OW": 0.52, "SG": 11.09, "SH": 1.93, "SO": 6.2, "SZ": 1.98, "TG": 5.89, "TI": 7.34, "UR": 0.74, "VD": 10.43, "VS": 5.14, "ZG": 1.82, "ZH": 24.25},
+  2015: {"AG": 7.13, "AI": 0.21, "AR": 1.02, "BE": 13.37, "BS": 3.23, "BL": 3.64, "FR": 3.94, "GE": 1.8, "GL": 0.59, "GR": 3.41, "JU": 1.26, "LU": 4.67, "NE": 3.84, "NW": 0.34, "OW": 0.33, "SG": 1.70, "SH": 1.70, "SO": 3.75, "SZ": 6.11, "TG": 6.02, "TI": 4.22, "UR": 0.32, "VD": 6.81, "VS": 3.23, "ZG": 1.34, "ZH": 16.95},
+  2016: {"AG": 6.97, "AI": 0.33, "AR": 0.80, "BE": 12.27, "BS": 2.89, "BL": 3.28, "FR": 2.30, "GE": 1.62, "GL": 0.57, "GR": 3.76, "JU": 0.92, "LU": 4.56, "NE": 2.79, "NW": 0.35, "OW": 0.29, "SG": 6.19, "SH": 1.14, "SO": 3.33, "SZ": 1.17, "TG": 3.85, "TI": 5.45, "UR": 0.74, "VD": 6.34, "VS": 4.08, "ZG": 1.03, "ZH": 16.22},
+  2017: {"AG": 10.50, "AI": 0.30, "AR": 1.03, "BE": 31.89, "BS": 3.36, "BL": 10.26, "FR": 5.44, "GE": 5.02, "GL": 1.37, "GR": 8.33, "JU": 2.33, "LU": 6.64, "NE": 3.33, "NW": 0.57, "OW": 1.18, "SG": 9.54, "SH": 1.04, "SO": 3.87, "SZ": 1.60, "TG": 8.42, "TI": 9.50, "UR": 0.86, "VD": 16.17, "VS": 6.72, "ZG": 2.12, "ZH": 22.71},
+  2018: {"AG": 8.65, "AI": 0.39, "AR": 1.26, "BE": 37.29, "BS": 3.31, "BL": 8.63, "FR": 8.93, "GE": 9.56, "GL": 1.45, "GR": 10.34, "JU": 2.32, "LU": 7.88, "NE": 5.32, "NW": 1.41, "OW": 0.67, "SG": 12.40, "SH": 1.70, "SO": 4.19, "SZ": 2.53, "TG": 10.50, "TI": 12.19, "UR": 1.50, "VD": 14.75, "VS": 12.16, "ZG": 1.60, "ZH": 29.67},
+  2019: {"AG": 11.69, "AI": 0.63, "AR": 1.69, "BE": 44.92, "BS": 4.87, "BL": 8.46, "FR": 10.53, "GE": 10.24, "GL": 1.98, "GR": 11.88, "JU": 2.83, "LU": 9.27, "NE": 7.32, "NW": 0.99, "OW": 1.21, "SG": 19.46, "SH": 2.68, "SO": 4.70, "SZ": 3.02, "TG": 12.19, "TI": 15.02, "UR": 1.32, "VD": 33.14, "VS": 16.27, "ZG": 1.66, "ZH": 26.32},
+  2020: {"AG": 9.29, "AI": 0.98, "AR": 1.86, "BE": 54.74, "BS": 6.46, "BL": 9.83, "FR": 15.15, "GE": 13.17, "GL": 2.90, "GR": 12.57, "JU": 2.59, "LU": 9.14, "NE": 6.46, "NW": 1.09, "OW": 1.09, "SG": 26.05, "SH": 3.45, "SO": 5.26, "SZ": 2.17, "TG": 11.10, "TI": 19.34, "UR": 1.58, "VD": 34.59, "VS": 17.35, "ZG": 2.10, "ZH": 28.32},
+  2021: {"AG": 10.68, "AI": 0.52, "AR": 2.35, "BE": 71.71, "BS": 7.36, "BL": 15.66, "FR": 17.97, "GE": 17.56, "GL": 2.41, "GR": 12.41, "JU": 3.19, "LU": 9.34, "NE": 8.25, "NW": 1.38, "OW": 0.92, "SG": 25.29, "SH": 5.49, "SO": 8.44, "SZ": 2.74, "TG": 16.57, "TI": 21.19, "UR": 2.07, "VD": 43.43, "VS": 19.85, "ZG": 1.50, "ZH": 33.05}
+};
+
+const cantonNames = {
+  "AG": "Aargau", "AI": "Appenzell Innerrhoden", "AR": "Appenzell Ausserrhoden",
+  "BE": "Bern", "BS": "Basel-Stadt", "BL": "Basel-Landschaft", "FR": "Fribourg",
+  "GE": "Geneva", "GL": "Glarus", "GR": "Graubünden", "JU": "Jura", "LU": "Lucerne",
+  "NE": "Neuchâtel", "NW": "Nidwalden", "OW": "Obwalden", "SG": "St. Gallen",
+  "SH": "Schaffhausen", "SO": "Solothurn", "SZ": "Schwyz", "TG": "Thurgau",
+  "TI": "Ticino", "UR": "Uri", "VD": "Vaud", "VS": "Valais", "ZG": "Zug", "ZH": "Zurich"
+};
+
+// Mapping from numeric IDs (from swiss-maps TopoJSON) to canton codes
+const numericIdToCode = {
+  1: "ZH",   // Zürich
+  2: "BE",   // Bern
+  3: "LU",   // Luzern
+  4: "UR",   // Uri
+  5: "SZ",   // Schwyz
+  6: "OW",   // Obwalden
+  7: "NW",   // Nidwalden
+  8: "GL",   // Glarus
+  9: "ZG",   // Zug
+  10: "FR",  // Fribourg
+  11: "SO",  // Solothurn
+  12: "BS",  // Basel-Stadt
+  13: "BL",  // Basel-Landschaft
+  14: "SH",  // Schaffhausen
+  15: "AR",  // Appenzell Ausserrhoden
+  16: "AI",  // Appenzell Innerrhoden
+  17: "SG",  // St. Gallen
+  18: "GR",  // Graubünden
+  19: "AG",  // Aargau
+  20: "TG",  // Thurgau
+  21: "TI",  // Ticino
+  22: "VD",  // Vaud
+  23: "VS",  // Valais
+  24: "NE",  // Neuchâtel
+  25: "GE",  // Genève
+  26: "JU"   // Jura
+};
+
+function getColor(value) {
+  if (value >= 30) return '#1E40AF';
+  if (value >= 15) return '#3B82F6';
+  if (value >= 5) return '#93C5FD';
+  return '#E0E7FF';
+}
+
+// ═══ EXCELLGENE FUNCTIONS ═══
+function showExcellGeneDetail() {
+  document.getElementById('excellgene-detail').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => {
+    initializeExcellGeneBarChart();
+    initializeExcellGeneBubbleChart();
+  });
+}
+
+function hideExcellGeneDetail() {
+  document.getElementById('excellgene-detail').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function scrollToTopExcellGene() {
+  document.getElementById('excellgene-detail').querySelector('.renovation-content').scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+// Bar Chart Animation
+function initializeExcellGeneBarChart() {
+  setTimeout(() => {
+    document.getElementById('bar-1').style.height = '100%';
+  }, 400);
+  
+  setTimeout(() => {
+    document.getElementById('bar-2').style.height = '100%';
+  }, 600);
+  
+  setTimeout(() => {
+    document.getElementById('bar-3').style.height = '100%';
+  }, 800);
+}
+
+// Bubble Chart Data
+const bubbleData = {
+  1: [
+    { name: 'Process', value: 4000, fullName: 'CO2 from process', color: '#D946EF' },
+    { name: 'Respiration', value: 800, fullName: 'Cellular respiration', actualValue: 0, color: '#F9A8D4' }
+  ],
+  2: [
+    { name: 'Electricity', value: 5000, fullName: 'Electricity', color: '#FBBF24' },
+    { name: 'Heating', value: 4800, fullName: 'Heating', color: '#EF4444' },
+    { name: 'Cooling', value: 2000, fullName: 'Cooling', color: '#38BDF8' },
+    { name: 'Water', value: 600, fullName: 'Water', actualValue: 100, color: '#3B82F6' }
+  ],
+  3: [
+    { name: 'Goods', value: 800000, fullName: 'Purchased Goods', color: '#1E40AF' },
+    { name: 'Services', value: 100000, fullName: 'Purchased Services', color: '#ff2cba' },
+    { name: 'Travel', value: 100000, fullName: 'Business Travel', color: '#F59E0B' },
+    { name: 'Commuting', value: 110000, fullName: 'Collaborator Commuting', color: '#10B981' },
+    { name: 'Deliveries', value: 10000, fullName: 'Downstream Deliveries', color: '#06B6D4' },
+    { name: 'Other', value: 10000, fullName: 'Other', color: '#F97316' }
+  ]
+};
+
+function normalizeScope(data) {
+  const maxValue = Math.max(...data.map(d => d.value));
+  return data.map(d => ({
+    ...d,
+    normalized: (d.value / maxValue) * 10
+  }));
+}
+
+Object.keys(bubbleData).forEach(scope => {
+  bubbleData[scope] = normalizeScope(bubbleData[scope]);
+});
+
+let currentBubbleScope = 3;
+let bubbleSvg;
+
+function initializeExcellGeneBubbleChart() {
+  const container = document.getElementById('bubble-chart');
+  const width = container.clientWidth;
+  const height = 420;
+  
+  bubbleSvg = d3.select('#bubble-chart')
+    .attr('width', width)
+    .attr('height', height);
+  
+  bubbleSvg.selectAll('*').remove();
+  
+  updateBubbles(currentBubbleScope);
+  
+  document.querySelectorAll('.scope-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.scope-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const scope = parseInt(this.getAttribute('data-scope'));
+      updateBubbles(scope);
+    });
+  });
+}
+
+function updateBubbles(scope) {
+  currentBubbleScope = scope;
+  const data = bubbleData[scope];
+  const width = bubbleSvg.attr('width');
+  const height = 420;
+  
+  const pack = d3.pack()
+    .size([width - 60, height - 60])
+    .padding(12);
+  
+  const root = d3.hierarchy({ children: data })
+    .sum(d => d.normalized);
+  
+  pack(root);
+  
+  const nodes = root.leaves();
+  
+  bubbleSvg.selectAll('g.bubble')
+    .transition()
+    .duration(400)
+    .style('opacity', 0)
+    .remove();
+  
+  setTimeout(() => {
+    const bubbles = bubbleSvg.selectAll('g.bubble')
+      .data(nodes, d => d.data.name);
+    
+    const enter = bubbles.enter()
+      .append('g')
+      .attr('class', 'bubble')
+      .attr('transform', d => `translate(${d.x + 30},${d.y + 30})`)
+      .style('opacity', 0);
+    
+    enter.append('circle')
+      .attr('r', 0)
+      .attr('fill', d => d.data.color)
+      .attr('opacity', 0.8)
+      .attr('stroke', '#fff')
+      .attr('stroke-width', 3)
+      .style('cursor', 'pointer')
+      .on('mouseover', function(event, d) {
+        const tooltip = document.getElementById('bubble-tooltip');
+        const displayValue = d.data.actualValue !== undefined ? d.data.actualValue : d.data.value;
+        tooltip.innerHTML = `<strong>${d.data.fullName}</strong><br>${displayValue.toLocaleString()} kg CO₂`;
+        tooltip.style.opacity = '1';
+      })
+      .on('mousemove', function(event) {
+        const tooltip = document.getElementById('bubble-tooltip');
+        tooltip.style.left = (event.pageX + 15) + 'px';
+        tooltip.style.top = (event.pageY - 10) + 'px';
+      })
+      .on('mouseout', function() {
+        const tooltip = document.getElementById('bubble-tooltip');
+        tooltip.style.opacity = '0';
+      });
+    
+    enter.append('text')
+      .attr('class', 'bubble-text')
+      .attr('text-anchor', 'middle')
+      .attr('dy', '0.35em')
+      .style('font-size', '0.85rem')
+      .style('font-weight', '700')
+      .style('fill', '#fff')
+      .style('text-shadow', '0 1px 3px rgba(0,0,0,0.3)')
+      .text(d => d.data.name);
+    
+    enter.transition()
+      .duration(600)
+      .style('opacity', 1);
+    
+    enter.select('circle')
+      .transition()
+      .duration(600)
+      .attr('r', d => d.r);
+    
+    enter.selectAll('text')
+      .transition()
+      .duration(600)
+      .style('font-size', d => {
+        const textLength = d.data.name.length;
+        const baseSize = Math.max(0.65, Math.min(1.1, d.r / 35));
+        
+        if (d.data.name === 'Deliveries' || d.data.name === 'Commuting') {
+          return `${baseSize * 0.6}rem`;
+        } else if (d.data.name === 'Other' && d.r < 40) {
+          return `${baseSize * 0.7}rem`;
+        } else if (textLength > 8) {
+          return `${baseSize * 0.75}rem`;
+        } else if (textLength > 6) {
+          return `${baseSize * 0.85}rem`;
+        }
+        return `${baseSize}rem`;
+      });
+  }, 450);
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// CERN FUNCTIONS
+// ══════════════════════════════════════════════════════════════════════════
+
+function showCERNDetail() {
+  document.getElementById('cern-detail').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => {
+    // Reset all buttons to default state (All active)
+    document.querySelectorAll('.cern-exhibition-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.getAttribute('data-exhibition') === 'all') {
+        btn.classList.add('active');
+      }
+    });
+    // Initialize charts with All view
+    initializeCERNCharts();
+  });
+}
+
+function hideCERNDetail() {
+  document.getElementById('cern-detail').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function scrollToTopCERN() {
+  document.getElementById('cern-detail').querySelector('.renovation-content').scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+// CERN Spider Chart Data
+const cernExperienceData = {
+  discover: [
+    { axis: 'Adaptation to general public', value: 8.5 },
+    { axis: 'Educational value', value: 9.5 },
+    { axis: 'Interactive engagement', value: 8.0 },
+    { axis: 'Emotional Impact', value: 6.5 },
+    { axis: 'Clarity of Content', value: 9.0 },
+    { axis: 'Visitor satisfaction', value: 9.0 }
+  ],
+  universe: [
+    { axis: 'Adaptation to general public', value: 9.0 },
+    { axis: 'Educational value', value: 9.0 },
+    { axis: 'Interactive engagement', value: 7.5 },
+    { axis: 'Emotional Impact', value: 9.5 },
+    { axis: 'Clarity of Content', value: 8.5 },
+    { axis: 'Visitor satisfaction', value: 8.5 }
+  ],
+  quantum: [
+    { axis: 'Adaptation to general public', value: 6.5 },
+    { axis: 'Educational value', value: 8.0 },
+    { axis: 'Interactive engagement', value: 9.0 },
+    { axis: 'Emotional Impact', value: 7.5 },
+    { axis: 'Clarity of Content', value: 6.0 },
+    { axis: 'Visitor satisfaction', value: 7.0 }
+  ]
+};
+
+const cernSentimentData = {
+  discover: [
+    { axis: 'Curiosité', value: 8.5 },
+    { axis: 'Fascination', value: 7.0 },
+    { axis: 'Inspiration', value: 7.5 },
+    { axis: 'Enthusiasm', value: 9.5 },
+    { axis: 'Confusion', value: 3.5 },
+    { axis: 'Frustration', value: 2.0 }
+  ],
+  universe: [
+    { axis: 'Curiosité', value: 8.0 },
+    { axis: 'Fascination', value: 9.5 },
+    { axis: 'Inspiration', value: 6.5 },
+    { axis: 'Enthusiasm', value: 7.5 },
+    { axis: 'Confusion', value: 2.5 },
+    { axis: 'Frustration', value: 1.5 }
+  ],
+  quantum: [
+    { axis: 'Curiosité', value: 10.0 },
+    { axis: 'Fascination', value: 7.0 },
+    { axis: 'Inspiration', value: 6.0 },
+    { axis: 'Enthusiasm', value: 5.5 },
+    { axis: 'Confusion', value: 7.0 },
+    { axis: 'Frustration', value: 2.5 }
+  ]
+};
+
+const cernColors = {
+  discover: '#6B3FF5',
+  universe: '#3B82F6',
+  quantum: '#10B981'
+};
+
+function initializeCERNCharts() {
+  // Initialize with "All" view showing all three exhibitions
+  createCERNAllSpiderCharts('cern-experience-chart', cernExperienceData);
+  createCERNAllSpiderCharts('cern-sentiment-chart', cernSentimentData);
+  
+  // Add button listeners
+  document.querySelectorAll('.cern-exhibition-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const exhibition = this.getAttribute('data-exhibition');
+      const chartType = this.getAttribute('data-chart');
+      
+      const parentCard = this.closest('.cern-viz-card');
+      parentCard.querySelectorAll('.cern-exhibition-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      
+      if (chartType === 'experience') {
+        if (exhibition === 'all') {
+          createCERNAllSpiderCharts('cern-experience-chart', cernExperienceData);
+        } else {
+          createCERNSpiderChart('cern-experience-chart', cernExperienceData[exhibition], exhibition);
+        }
+      } else {
+        if (exhibition === 'all') {
+          createCERNAllSpiderCharts('cern-sentiment-chart', cernSentimentData);
+        } else {
+          createCERNSpiderChart('cern-sentiment-chart', cernSentimentData[exhibition], exhibition);
+        }
+      }
+    });
+  });
+}
+
+function createCERNSpiderChart(containerId, data, exhibition) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  
+  const width = container.clientWidth;
+  const height = 400;
+  const margin = { top: 60, right: 80, bottom: 60, left: 80 };
+  const radius = Math.min(width - margin.left - margin.right, height - margin.top - margin.bottom) / 2;
+  
+  const svg = d3.select(`#${containerId}`)
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height)
+    .append('g')
+    .attr('transform', `translate(${width/2}, ${height/2})`);
+  
+  const allAxis = data.map(d => d.axis);
+  const total = allAxis.length;
+  const angleSlice = Math.PI * 2 / total;
+  
+  const rScale = d3.scaleLinear()
+    .domain([0, 10])
+    .range([0, radius]);
+  
+  // Grid
+  const levels = 5;
+  for (let level = 1; level <= levels; level++) {
+    const levelRadius = radius * (level / levels);
+    
+    svg.append('circle')
+      .attr('r', levelRadius)
+      .style('fill', 'none')
+      .style('stroke', '#E5E5F0')
+      .style('stroke-width', '1px');
+    
+    if (level < levels) {
+      svg.append('text')
+        .attr('x', 4)
+        .attr('y', -levelRadius)
+        .style('font-size', '10px')
+        .style('fill', '#999')
+        .text((10 * level / levels).toFixed(0));
+    }
+  }
+  
+  // Axes
+  const axis = svg.selectAll('.axis')
+    .data(allAxis)
+    .enter()
+    .append('g')
+    .attr('class', 'axis');
+  
+  axis.append('line')
+    .attr('x1', 0)
+    .attr('y1', 0)
+    .attr('x2', (d, i) => rScale(10) * Math.cos(angleSlice * i - Math.PI / 2))
+    .attr('y2', (d, i) => rScale(10) * Math.sin(angleSlice * i - Math.PI / 2))
+    .style('stroke', '#E5E5F0')
+    .style('stroke-width', '1px');
+  
+  // Labels
+  axis.append('text')
+    .attr('class', 'legend')
+    .style('font-size', '12px')
+    .style('font-weight', '600')
+    .style('fill', '#555566')
+    .attr('text-anchor', 'middle')
+    .attr('dy', '0.35em')
+    .attr('x', (d, i) => (rScale(10) + 30) * Math.cos(angleSlice * i - Math.PI / 2))
+    .attr('y', (d, i) => (rScale(10) + 30) * Math.sin(angleSlice * i - Math.PI / 2))
+    .text(d => d)
+    .call(wrapCERNText, 80);
+  
+  const radarLine = d3.lineRadial()
+    .radius(d => rScale(d.value))
+    .angle((d, i) => i * angleSlice)
+    .curve(d3.curveLinearClosed);
+  
+  const radarArea = d3.areaRadial()
+    .innerRadius(0)
+    .outerRadius(d => rScale(d.value))
+    .angle((d, i) => i * angleSlice)
+    .curve(d3.curveLinearClosed);
+  
+  // Area
+  svg.append('path')
+    .datum(data)
+    .attr('class', 'radar-area')
+    .attr('d', radarArea)
+    .style('fill', cernColors[exhibition])
+    .style('fill-opacity', 0)
+    .style('stroke', 'none')
+    .transition()
+    .duration(800)
+    .style('fill-opacity', 0.3);
+  
+  // Line
+  svg.append('path')
+    .datum(data)
+    .attr('class', 'radar-line')
+    .attr('d', radarLine)
+    .style('stroke', cernColors[exhibition])
+    .style('stroke-width', '3px')
+    .style('fill', 'none')
+    .style('stroke-dasharray', function() {
+      const length = this.getTotalLength();
+      return `${length} ${length}`;
+    })
+    .style('stroke-dashoffset', function() {
+      return this.getTotalLength();
+    })
+    .transition()
+    .duration(800)
+    .style('stroke-dashoffset', 0);
+  
+  // Points
+  svg.selectAll('.radar-point')
+    .data(data)
+    .enter()
+    .append('circle')
+    .attr('class', 'radar-point')
+    .attr('r', 0)
+    .attr('cx', (d, i) => rScale(d.value) * Math.cos(angleSlice * i - Math.PI / 2))
+    .attr('cy', (d, i) => rScale(d.value) * Math.sin(angleSlice * i - Math.PI / 2))
+    .style('fill', cernColors[exhibition])
+    .style('stroke', 'white')
+    .style('stroke-width', '2px')
+    .transition()
+    .duration(800)
+    .attr('r', 5);
+}
+
+function createCERNAllSpiderCharts(containerId, dataObj) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  
+  const width = container.clientWidth;
+  const height = 400;
+  const margin = { top: 60, right: 80, bottom: 80, left: 80 };
+  const radius = Math.min(width - margin.left - margin.right, height - margin.top - margin.bottom) / 2;
+  
+  const svg = d3.select(`#${containerId}`)
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height)
+    .append('g')
+    .attr('transform', `translate(${width/2}, ${height/2})`);
+  
+  const allAxis = dataObj.discover.map(d => d.axis);
+  const total = allAxis.length;
+  const angleSlice = Math.PI * 2 / total;
+  
+  const rScale = d3.scaleLinear()
+    .domain([0, 10])
+    .range([0, radius]);
+  
+  // Grid
+  const levels = 5;
+  for (let level = 1; level <= levels; level++) {
+    const levelRadius = radius * (level / levels);
+    
+    svg.append('circle')
+      .attr('r', levelRadius)
+      .style('fill', 'none')
+      .style('stroke', '#E5E5F0')
+      .style('stroke-width', '1px');
+    
+    if (level < levels) {
+      svg.append('text')
+        .attr('x', 4)
+        .attr('y', -levelRadius)
+        .style('font-size', '10px')
+        .style('fill', '#999')
+        .text((10 * level / levels).toFixed(0));
+    }
+  }
+  
+  // Axes
+  const axis = svg.selectAll('.axis')
+    .data(allAxis)
+    .enter()
+    .append('g')
+    .attr('class', 'axis');
+  
+  axis.append('line')
+    .attr('x1', 0)
+    .attr('y1', 0)
+    .attr('x2', (d, i) => rScale(10) * Math.cos(angleSlice * i - Math.PI / 2))
+    .attr('y2', (d, i) => rScale(10) * Math.sin(angleSlice * i - Math.PI / 2))
+    .style('stroke', '#E5E5F0')
+    .style('stroke-width', '1px');
+  
+  // Labels
+  axis.append('text')
+    .attr('class', 'legend')
+    .style('font-size', '11px')
+    .style('font-weight', '600')
+    .style('fill', '#555566')
+    .attr('text-anchor', 'middle')
+    .attr('dy', '0.35em')
+    .attr('x', (d, i) => (rScale(10) + 30) * Math.cos(angleSlice * i - Math.PI / 2))
+    .attr('y', (d, i) => (rScale(10) + 30) * Math.sin(angleSlice * i - Math.PI / 2))
+    .text(d => d)
+    .call(wrapCERNText, 80);
+  
+  // Draw all three datasets
+  const exhibitions = ['discover', 'universe', 'quantum'];
+  
+  exhibitions.forEach((exhibition, index) => {
+    const data = dataObj[exhibition];
+    
+    const radarLine = d3.lineRadial()
+      .radius(d => rScale(d.value))
+      .angle((d, i) => i * angleSlice)
+      .curve(d3.curveLinearClosed);
+    
+    const radarArea = d3.areaRadial()
+      .innerRadius(0)
+      .outerRadius(d => rScale(d.value))
+      .angle((d, i) => i * angleSlice)
+      .curve(d3.curveLinearClosed);
+    
+    // Area
+    svg.append('path')
+      .datum(data)
+      .attr('class', `radar-area-${exhibition}`)
+      .attr('d', radarArea)
+      .style('fill', cernColors[exhibition])
+      .style('fill-opacity', 0)
+      .style('stroke', 'none')
+      .transition()
+      .delay(index * 150)
+      .duration(600)
+      .style('fill-opacity', 0.15);
+    
+    // Line
+    svg.append('path')
+      .datum(data)
+      .attr('class', `radar-line-${exhibition}`)
+      .attr('d', radarLine)
+      .style('stroke', cernColors[exhibition])
+      .style('stroke-width', '2.5px')
+      .style('fill', 'none')
+      .style('stroke-dasharray', function() {
+        const length = this.getTotalLength();
+        return `${length} ${length}`;
+      })
+      .style('stroke-dashoffset', function() {
+        return this.getTotalLength();
+      })
+      .transition()
+      .delay(index * 150)
+      .duration(600)
+      .style('stroke-dashoffset', 0);
+    
+    // Points
+    svg.selectAll(`.radar-point-${exhibition}`)
+      .data(data)
+      .enter()
+      .append('circle')
+      .attr('class', `radar-point-${exhibition}`)
+      .attr('r', 0)
+      .attr('cx', (d, i) => rScale(d.value) * Math.cos(angleSlice * i - Math.PI / 2))
+      .attr('cy', (d, i) => rScale(d.value) * Math.sin(angleSlice * i - Math.PI / 2))
+      .style('fill', cernColors[exhibition])
+      .style('stroke', 'white')
+      .style('stroke-width', '2px')
+      .transition()
+      .delay(index * 150)
+      .duration(600)
+      .attr('r', 4);
+  });
+  
+  // Legend
+  const legendData = [
+    { name: 'Discover CERN', color: cernColors.discover },
+    { name: 'Our Universe', color: cernColors.universe },
+    { name: 'Quantum World', color: cernColors.quantum }
+  ];
+  
+  const legend = d3.select(`#${containerId} svg`)
+    .append('g')
+    .attr('class', 'legend')
+    .attr('transform', `translate(${width/2 - 150}, ${height - 20})`);
+  
+  legendData.forEach((item, i) => {
+    const legendRow = legend.append('g')
+      .attr('transform', `translate(${i * 120}, 0)`);
+    
+    legendRow.append('circle')
+      .attr('r', 5)
+      .attr('cx', 0)
+      .attr('cy', 0)
+      .style('fill', item.color);
+    
+    legendRow.append('text')
+      .attr('x', 12)
+      .attr('y', 0)
+      .attr('dy', '0.35em')
+      .style('font-size', '11px')
+      .style('font-weight', '600')
+      .style('fill', '#555566')
+      .text(item.name);
+  });
+}
+
+function wrapCERNText(text, width) {
+  text.each(function() {
+    const text = d3.select(this);
+    const words = text.text().split(/\s+/).reverse();
+    let word;
+    let line = [];
+    let lineNumber = 0;
+    const lineHeight = 1.1;
+    const y = text.attr('y');
+    const dy = parseFloat(text.attr('dy'));
+    let tspan = text.text(null).append('tspan').attr('x', text.attr('x')).attr('y', y).attr('dy', dy + 'em');
+    
+    while (word = words.pop()) {
+      line.push(word);
+      tspan.text(line.join(' '));
+      if (tspan.node().getComputedTextLength() > width && line.length > 1) {
+        line.pop();
+        tspan.text(line.join(' '));
+        line = [word];
+        tspan = text.append('tspan').attr('x', text.attr('x')).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);
+      }
+    }
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// HANTAVIRUS FUNCTIONS
+// ══════════════════════════════════════════════════════════════════════════
+
+function showHantavirusDetail() {
+  document.getElementById('hantavirus-detail').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function hideHantavirusDetail() {
+  document.getElementById('hantavirus-detail').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function scrollToTopHantavirus() {
+  document.getElementById('hantavirus-detail').querySelector('.renovation-content').scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+
+</script>
+</body>
+</html>
