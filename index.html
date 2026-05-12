@@ -422,11 +422,27 @@ nav {
 }
 
 .page-heading {
-  font-size: 1.4rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--dark);
-  margin-bottom: 32px;
+  margin-bottom: 60px;
   text-align: center;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.page-heading::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: var(--purple);
+  border-radius: 2px;
 }
 
 .approach-cards {
@@ -821,14 +837,14 @@ nav {
 .analytics-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 100px 60px;
+  padding: 40px 60px;
 }
 
 .analytics-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
   text-align: center;
-  margin-bottom: 80px;
+  margin-bottom: 60px;
   position: relative;
   display: inline-block;
   left: 50%;
@@ -841,8 +857,8 @@ nav {
   bottom: -12px;
   left: 50%;
   transform: translateX(-50%);
-  width: 120px;
-  height: 4px;
+  width: 100px;
+  height: 3px;
   background: var(--purple);
   border-radius: 2px;
 }
