@@ -4433,7 +4433,13 @@ function drawTimelineFCurve(horizon) {
     .attr('stroke-dasharray', '2,2');
   
   const lineObserved = d3.line().x(d => x(d.dateObj)).y(d => y(d.gdp_observed));
-  const linePredicted = d3.line().x(d => x(d.dateObj)).y(d => y(d[predKey]));
+  const linePredicted = d3.line()
+  .x(d => {
+    const shiftedDate = new Date(d.dateObj);
+    shiftedDate.setMonth(shiftedDate.getMonth() - (horizon * 9));
+    return x(shiftedDate);
+  })
+  .y(d => y(-d[predKey]));
   const lineFcurve = d3.line().x(d => x(d.dateObj)).y(d => y(d.fcurve_inverted));
   
   // F-curve (no animation)
